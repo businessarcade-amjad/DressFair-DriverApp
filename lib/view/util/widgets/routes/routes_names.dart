@@ -1,0 +1,11 @@
+const String splashScreen = '/';
+const String homeScreen = '/HomeScreen';
+const String loginInScreen = '/LoginScreen';
+const String pendingScreenMain = '/PendingScreenMain';
+const String detailPendingScreen = '/DetailPendingScreen';
+const String returnedScreenMain = '/ReturnedScreenMain';
+const String detailReturnedScreen = '/DetailReturnedScreen';
+const String deliveredScreenMain = '/DeliveredScreenMain';
+const String detailDeliveredScreen = '/DetailDeliveredScreen';
+const String mainPickupScreen = '/MainPickupScreen';
+const String allProductPickScreen = '/AllProductPickScreen';
