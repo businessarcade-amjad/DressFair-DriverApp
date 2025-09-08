@@ -1,9 +1,10 @@
-import 'package:dressfair_driver_app/view/util/constant/image_constant.dart';
+import 'package:dressfair_driver_app/model/pending_task/pending_task.dart';
 import 'package:dressfair_driver_app/view/util/widgets/routes/screens_library.dart';
 import 'package:dressfair_driver_app/view/util/widgets/shadows_reuse/AppShadows.dart';
 
 class DetailPendingScreen extends StatefulWidget {
-  const DetailPendingScreen({super.key});
+  final PendingShipment shipment;
+  const DetailPendingScreen({super.key,required this.shipment});
 
   @override
   State<DetailPendingScreen> createState() => _DetailPendingScreenState();
@@ -36,7 +37,7 @@ class _DetailPendingScreenState extends State<DetailPendingScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Order No:  11233420",style: TextStyle(fontWeight:FontWeight.w500),),
+              Text("Order No:  ${widget.shipment.spAwbNumber}",style: TextStyle(fontWeight:FontWeight.w500),),
               Container(
                 height: 30.h,
                 width: 140.w,
@@ -44,7 +45,7 @@ class _DetailPendingScreenState extends State<DetailPendingScreen> {
                   color: Colors.white,
                   border: Border.all(color: AppColors.primaryColor)
                 ),
-                child: Center(child: Text("Cash On Delivery")),
+                child: Center(child: Text("${widget.shipment.paymentMethod.name}")),
               )
           ],
               ),
@@ -60,7 +61,7 @@ class _DetailPendingScreenState extends State<DetailPendingScreen> {
                   Text("esk dxb",style: TextStyle(fontWeight:FontWeight.w500),),
                   30.w.sw,
                   Text("Mobile No:",style:TextStyle(fontWeight:FontWeight.w400),),
-                  Text("  971565345225",style:TextStyle(fontWeight:FontWeight.w500),),
+                  Text("${widget.shipment.to_mobile}",style:TextStyle(fontWeight:FontWeight.w500),),
                 ],
               ),
             ),
@@ -75,7 +76,7 @@ class _DetailPendingScreenState extends State<DetailPendingScreen> {
                   Container(
 
                       width: MediaQuery.sizeOf(context).width*0.7,
-                      child: Text("AL Nahda shoaibi tower 1302 shoaibi tower1302-1302 Sharjah",overflow:TextOverflow.ellipsis,style: TextStyle(fontWeight:FontWeight.w400),maxLines: 2,softWrap: true,)),
+                      child: Text("${widget.shipment.toAddress} ${widget.shipment.cityArea.name} ${widget.shipment.city.name}",overflow:TextOverflow.ellipsis,style: TextStyle(fontWeight:FontWeight.w400),maxLines: 2,softWrap: true,)),
 
 
                 ],

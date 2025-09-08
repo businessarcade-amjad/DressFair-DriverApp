@@ -1,4 +1,5 @@
 import 'package:dressfair_driver_app/controller/login_controller.dart';
+import 'package:dressfair_driver_app/view/util/dialog/loading_dialog.dart';
 import 'package:dressfair_driver_app/view/util/widgets/routes/screens_library.dart';
 
 
@@ -77,7 +78,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     bottom: 0,
                       child:
                       FeatureCards(text1: 'PICKUP',icon1:AppImages.pickupIcon, text2:'PENDING',icon2:AppImages.pendingIcon, onTap1:(){
-
                         Get.toNamed(mainPickupScreen);
                       }, onTap2: () {
                         Get.toNamed(pendingScreenMain);

@@ -8,6 +8,7 @@ class ScanBarcodeScannerModel {
   final int? toCityAreaId;
   final String? spAwbNumber;
   final String? toAddress;
+  final String? contents;
   final ShipmentStatus? status;
   final PaymentMethod? paymentMethod;
   final City? city;
@@ -21,6 +22,7 @@ class ScanBarcodeScannerModel {
     this.toCityAreaId,
     this.spAwbNumber,
     this.toAddress,
+    this.contents,
     this.status,
     this.paymentMethod,
     this.city,
@@ -36,6 +38,7 @@ class ScanBarcodeScannerModel {
       toCityAreaId: json['to_city_area_id'],
       spAwbNumber: json['sp_awb_number'],
       toAddress: json['to_address'],
+      contents: json['contents'],
       status: json['status'] != null ? ShipmentStatus.fromJson(json['status']) : null,
       paymentMethod: json['payment_method'] != null ? PaymentMethod.fromJson(json['payment_method']) : null,
       city: json['city'] != null ? City.fromJson(json['city']) : null,
@@ -52,6 +55,7 @@ class ScanBarcodeScannerModel {
       "to_city_area_id": toCityAreaId,
       "sp_awb_number": spAwbNumber,
       "to_address": toAddress,
+      "contents": contents,
       "status": status?.toJson(),
       "payment_method": paymentMethod?.toJson(),
       "city": city?.toJson(),

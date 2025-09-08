@@ -23,7 +23,7 @@ Future<void> scanBarCode({required String barCodeId})async{
       if (!alreadyExists) {
         allProductPick.add(shipment);
         AppToast.showSuccess("Shipment added: ${shipment.spAwbNumber}");
-      Get.back();
+      //Get.back();
       } else {
         AppToast.showError("This shipment already exists!");
       }

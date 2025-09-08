@@ -1,3 +1,4 @@
+import 'package:dressfair_driver_app/model/pending_task/pending_task.dart';
 import 'package:dressfair_driver_app/view/screen/delivered_screen/delivered_screen_main.dart';
 import 'package:dressfair_driver_app/view/screen/delivered_screen/detail_delivered_screen.dart';
 import 'package:dressfair_driver_app/view/screen/pending_screen/detail_pending_screen.dart';
@@ -20,7 +21,8 @@ class MyRoutes {
         case pendingScreenMain:
       return MaterialPageRoute(builder: (context) => const PendingScreenMain());
       case detailPendingScreen:
-      return MaterialPageRoute(builder: (context) => const DetailPendingScreen());
+        final shipment = settings.arguments as PendingShipment;
+      return MaterialPageRoute(builder: (context) => DetailPendingScreen(shipment: shipment));
       case detailReturnedScreen:
         return MaterialPageRoute(builder: (context) => const DetailReturnedScreen());
       case returnedScreenMain:
