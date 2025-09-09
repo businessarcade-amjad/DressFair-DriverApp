@@ -1,153 +1,183 @@
-class PendingShipment {
-  final int id;
-  //final String mobile_no;
-  final int paymentMethodId;
-  final int toCityId;
-  final int spStatusId;
-  final int toCityAreaId;
-  final String spAwbNumber;
-  final String toAddress;
-  final String to_mobile;
-  final String to_alternate_mobile;
-  final String contents;
-  final String amount;
 
-  final Status status;
-  final PaymentMethod paymentMethod;
-  final City city;
-  final CityArea cityArea;
+
+class PendingShipment {
+  int? id;
+  int? tenantId;
+  int? paymentMethodId;
+  int? toCityId;
+  int? spStatusId;
+  int? toCityAreaId;
+  String? spAwbNumber;
+  String? toAddress;
+  String? toMobile;
+  String? toAlternateMobile;
+  String? contents;
+  String? amount;
+
+  Status? status;
+  PaymentMethod? paymentMethod;
+  City? city;
+  CityArea? cityArea;
+  Currency? currency;
+
+  // 🔥 Example new key
+  String? deliveryDate;
 
   PendingShipment({
-    required this.id,
-    required this.paymentMethodId,
-    required this.toCityId,
-    required this.spStatusId,
-    required this.toCityAreaId,
-    required this.spAwbNumber,
-    required this.toAddress,
-    required this.to_mobile,
-    required this.to_alternate_mobile,
-    required this.contents,
-    required this.amount,
-    required this.status,
-    required this.paymentMethod,
-    required this.city,
-    required this.cityArea,
+    this.id,
+    this.tenantId,
+    this.paymentMethodId,
+    this.toCityId,
+    this.spStatusId,
+    this.toCityAreaId,
+    this.spAwbNumber,
+    this.toAddress,
+    this.toMobile,
+    this.toAlternateMobile,
+    this.contents,
+    this.amount,
+    this.status,
+    this.paymentMethod,
+    this.city,
+    this.cityArea,
+    this.currency,
+    this.deliveryDate,
   });
 
-  factory PendingShipment.fromJson(Map<String, dynamic> json) {
-    return PendingShipment(
-      id: json['id'] ?? 0,
-      paymentMethodId: json['payment_method_id'] ?? 0,
-      toCityId: json['to_city_id'] ?? 0,
-      spStatusId: json['sp_status_id'] ?? 0,
-      toCityAreaId: json['to_city_area_id'] ?? 0,
-      spAwbNumber: json['sp_awb_number'] ?? '',
-      toAddress: json['to_address'] ?? '',
-      to_mobile: json['to_mobile'] ?? '',
-      status: Status.fromJson(json['status'] ?? {}),
-      paymentMethod: PaymentMethod.fromJson(json['payment_method'] ?? {}),
-      city: City.fromJson(json['city'] ?? {}),
-      cityArea: CityArea.fromJson(json['city_area'] ?? {}),
-      to_alternate_mobile:json['to_alternate_mobile'] ?? '' ,
-      contents: json['contents'] ?? '',
-      amount: json['amount'] ?? '',
-    );
+  PendingShipment.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    tenantId = json['tenant_id'];
+    paymentMethodId = json['payment_method_id'];
+    toCityId = json['to_city_id'];
+    spStatusId = json['sp_status_id'];
+    toCityAreaId = json['to_city_area_id'];
+    spAwbNumber = json['sp_awb_number'];
+    toAddress = json['to_address'];
+    toMobile = json['to_mobile'];
+    toAlternateMobile = json['to_alternate_mobile'];
+    contents = json['contents'];
+    amount = json['amount'];
+    status = json['status'] != null ? Status.fromJson(json['status']) : null;
+    paymentMethod = json['payment_method'] != null
+        ? PaymentMethod.fromJson(json['payment_method'])
+        : null;
+    city = json['city'] != null ? City.fromJson(json['city']) : null;
+    cityArea = json['city_area'] != null ? CityArea.fromJson(json['city_area']) : null;
+    currency = json['currency'] != null ? Currency.fromJson(json['currency']) : null;
+
+    // 🔥 assign new key
+    deliveryDate = json['delivery_date'];
   }
+  static List<PendingShipment> listFromJson(dynamic json) {
+    if (json == null) return [];
+
+    // here `json` is already a List<dynamic>
+    if (json is List) {
+      return json
+          .map((e) => PendingShipment.fromJson(Map<String, dynamic>.from(e)))
+          .toList();
+    }
+
+    throw ArgumentError('Invalid JSON passed to PendingShipment.listFromJson');
+  }
+
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'payment_method_id': paymentMethodId,
-      'to_city_id': toCityId,
-      'sp_status_id': spStatusId,
-      'to_city_area_id': toCityAreaId,
-      'sp_awb_number': spAwbNumber,
-      'to_address': toAddress,
-      'to_mobile': to_mobile,
-      'status': status.toJson(),
-      'payment_method': paymentMethod.toJson(),
-      'city': city.toJson(),
-      'city_area': cityArea.toJson(),
-    };
-  }
-
-  /// Helper to parse list of shipments
-  static List<PendingShipment> listFromJson(List<dynamic> json) {
-    return json.map((e) => PendingShipment.fromJson(e)).toList();
+    final Map<String, dynamic> map = {};
+    map['id'] = id;
+    map['tenant_id'] = tenantId;
+    map['payment_method_id'] = paymentMethodId;
+    map['to_city_id'] = toCityId;
+    map['sp_status_id'] = spStatusId;
+    map['to_city_area_id'] = toCityAreaId;
+    map['sp_awb_number'] = spAwbNumber;
+    map['to_address'] = toAddress;
+    map['to_mobile'] = toMobile;
+    map['to_alternate_mobile'] = toAlternateMobile;
+    map['contents'] = contents;
+    map['amount'] = amount;
+    if (status != null) map['status'] = status!.toJson();
+    if (paymentMethod != null) map['payment_method'] = paymentMethod!.toJson();
+    if (city != null) map['city'] = city!.toJson();
+    if (cityArea != null) map['city_area'] = cityArea!.toJson();
+    if (currency != null) map['currency'] = currency!.toJson();
+    map['delivery_date'] = deliveryDate;
+    return map;
   }
 }
 
 class Status {
-  final int id;
-  final String name;
+  int? id;
+  String? name;
 
-  Status({required this.id, required this.name});
+  Status({this.id, this.name});
 
-  factory Status.fromJson(Map<String, dynamic> json) {
-    return Status(
-      id: json['id'] ?? 0,
-      name: json['name'] ?? '',
-    );
+  Status.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
   }
 
-  Map<String, dynamic> toJson() {
-    return {'id': id, 'name': name};
-  }
+  Map<String, dynamic> toJson() => {'id': id, 'name': name};
 }
 
 class PaymentMethod {
-  final int id;
-  final String name;
-  final String code;
+  int? id;
+  String? name;
+  String? code;
 
-  PaymentMethod({required this.id, required this.name, required this.code});
+  PaymentMethod({this.id, this.name, this.code});
 
-  factory PaymentMethod.fromJson(Map<String, dynamic> json) {
-    return PaymentMethod(
-      id: json['id'] ?? 0,
-      name: json['name'] ?? '',
-      code: json['code'] ?? '',
-    );
+  PaymentMethod.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    code = json['code'];
   }
 
-  Map<String, dynamic> toJson() {
-    return {'id': id, 'name': name, 'code': code};
-  }
+  Map<String, dynamic> toJson() => {'id': id, 'name': name, 'code': code};
 }
 
 class City {
-  final int id;
-  final String name;
+  int? id;
+  String? name;
 
-  City({required this.id, required this.name});
+  City({this.id, this.name});
 
-  factory City.fromJson(Map<String, dynamic> json) {
-    return City(
-      id: json['id'] ?? 0,
-      name: json['name'] ?? '',
-    );
+  City.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
   }
 
-  Map<String, dynamic> toJson() {
-    return {'id': id, 'name': name};
-  }
+  Map<String, dynamic> toJson() => {'id': id, 'name': name};
 }
 
 class CityArea {
-  final int id;
-  final String name;
+  int? id;
+  String? name;
 
-  CityArea({required this.id, required this.name});
+  CityArea({this.id, this.name});
 
-  factory CityArea.fromJson(Map<String, dynamic> json) {
-    return CityArea(
-      id: json['id'] ?? 0,
-      name: json['name'] ?? '',
-    );
+  CityArea.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
   }
 
-  Map<String, dynamic> toJson() {
-    return {'id': id, 'name': name};
+  Map<String, dynamic> toJson() => {'id': id, 'name': name};
+}
+
+class Currency {
+  String? code;
+  int? laravelThroughKey;
+
+  Currency({this.code, this.laravelThroughKey});
+
+  Currency.fromJson(Map<String, dynamic> json) {
+    code = json['code'];
+    laravelThroughKey = json['laravel_through_key'];
   }
+
+  Map<String, dynamic> toJson() => {
+    'code': code,
+    'laravel_through_key': laravelThroughKey,
+  };
+
 }

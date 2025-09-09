@@ -44,7 +44,7 @@ class _DetailPendingScreenState extends State<DetailPendingScreen> {
                   color: Colors.white,
                   border: Border.all(color: AppColors.primaryColor)
                 ),
-                child: Center(child: Text("${widget.shipment.paymentMethod.name}")),
+                child: Center(child: Text("${widget.shipment.paymentMethod?.name??""}")),
               )
           ],
               ),
@@ -60,7 +60,7 @@ class _DetailPendingScreenState extends State<DetailPendingScreen> {
                   Text("esk dxb",style: TextStyle(fontWeight:FontWeight.w500),),
                   30.w.sw,
                   Text("Mobile No : ",style:TextStyle(fontWeight:FontWeight.w400),),
-                  Text("${widget.shipment.to_mobile}",style:TextStyle(fontWeight:FontWeight.w500),),
+                  Text("${widget.shipment?.toMobile??""}",style:TextStyle(fontWeight:FontWeight.w500),),
                 ],
               ),
             ),
@@ -76,7 +76,7 @@ class _DetailPendingScreenState extends State<DetailPendingScreen> {
                   Container(
 
                       width: MediaQuery.sizeOf(context).width*0.7,
-                      child: Text("${widget.shipment.toAddress} ${widget.shipment.cityArea.name} ${widget.shipment.city.name}",overflow:TextOverflow.ellipsis,style: TextStyle(fontWeight:FontWeight.w400),maxLines: 2,softWrap: true,)),
+                      child: Text("${widget.shipment.toAddress} ${widget.shipment.cityArea?.name??""} ${widget.shipment.city?.name??""}",overflow:TextOverflow.ellipsis,style: TextStyle(fontWeight:FontWeight.w400),maxLines: 2,softWrap: true,)),
 
 
                 ],
@@ -109,7 +109,7 @@ class _DetailPendingScreenState extends State<DetailPendingScreen> {
                   Text("Amount: ",style: TextStyle(fontWeight:FontWeight.w400,color: Colors.red),),
                   Container(
                       width: MediaQuery.sizeOf(context).width*0.7,
-                      child: Text("${widget.shipment.amount} ",overflow:TextOverflow.ellipsis,style: TextStyle(fontWeight:FontWeight.w400),maxLines: 2,softWrap: true,)),
+                      child: Text("${widget.shipment.amount} ${widget.shipment.currency?.code??"" } ",overflow:TextOverflow.ellipsis,style: TextStyle(fontWeight:FontWeight.w400),maxLines: 2,softWrap: true,)),
 
 
                 ],

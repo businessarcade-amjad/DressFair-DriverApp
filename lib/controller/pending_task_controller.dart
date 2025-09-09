@@ -1,52 +1,145 @@
 import 'dart:developer';
+import 'package:dressfair_driver_app/repository/service/network/api_response.dart';
+import 'package:get/get.dart';
 import 'package:dressfair_driver_app/controller/login_controller.dart';
 import 'package:dressfair_driver_app/model/pending_task/pending_task.dart';
-import 'package:dressfair_driver_app/repository/service/network/api_response.dart';
 import 'package:dressfair_driver_app/repository/service/network/repository/pending_shipment/pending_shipment_repository.dart';
 import 'package:dressfair_driver_app/view/util/widgets/routes/screens_library.dart';
 
-class PendingTaskController extends GetxController{
-  RxString selectedFilter = "All Record".obs;
-  final RxList<String> filters = <String>[
-    "All Record",
-    "Today",
-    "Yesterday",
-    "Last 2 days",
-    "Last 3 days",
-    "Last week",
-    "Last month"
-  ].obs;
+class PendingTaskController extends GetxController {
+  /// UI label selected
+  RxString selectedFilterLabel = "All Record".obs;
 
-  RxList<PendingShipment> pendingShipment =<PendingShipment>[].obs;
+  /// UI label -> backend value
+  final Map<String, String> filterMap = {
+    "All Record": "all",
+    "Today": "today",
+    "Yesterday": "yesterday",
+    "This Week": "thisweek",
+    "Last Week": "lastweek",
+    "This Month": "thismonth",
+    "Last Month": "lastmonth",
+    "Custom Range": "custom",
+  };
+
+  /// For custom range
+  String? dateFrom;
+  String? dateTo;
+  String get selectedFilterValue =>
+      filterMap[selectedFilterLabel.value] ?? "all";
+
+  RxList<PendingShipment> pendingShipment = <PendingShipment>[].obs;
   final PendingShipmentRepository apiRepository = PendingShipmentRepository();
+
   RxBool isLoading = false.obs;
-  Future<void> pendingTask()async{
-      try{
-        LoginController loginController =Get.put(LoginController());
-        isLoading.value=true;
-        var response= await apiRepository.getPendingShipment(token:loginController.token.value);
-        if (response != null && response["success"] == true) {
+  RxBool isMoreLoading = false.obs;
+  RxBool hasMore = true.obs;
 
-          /// ✅ Parse into model list
-          final shipments = PendingShipment.listFromJson(response["data"]);
-          /// ✅ Assign to observable list
-          pendingShipment.assignAll(shipments);
-          /// Debug print
-          log("First address: ${shipments.first.toAddress}");
-          log("Total pending shipments: ${shipments.length}");
+  /// Start page at 1 (important! backend doesn't accept 0)
+  int page = 1;
 
-        }else{
-          AppToast.showError( response["message"]);
+  /// Build API endpoint depending on filter and page.
+  String buildEndpoint() {
+    final filter = selectedFilterValue;
+    if (filter == "all") {
+      return page > 1
+          ? "${AppUrl.pendingShipment}?page=$page"
+          : AppUrl.pendingShipment;
+    }
+    if (filter == "custom") {
+      String endpoint =
+          "${AppUrl.pendingShipment}?by_duration=custom&date_from=$dateFrom&date_to=$dateTo";
+      if (page > 1) endpoint += "&page=$page";
+      return endpoint;
+    }
+    String endpoint = "${AppUrl.pendingShipment}?by_duration=$filter";
+    if (page > 1) endpoint += "&page=$page";
+    return endpoint;
+  }
 
+  /// Fetch first page (or refresh) — clears list and resets page to 1
+  Future<void> pendingTask() async {
+    try {
+      LoginController loginController = Get.put(LoginController());
+      isLoading.value = true;
+
+      // reset
+      page = 1;
+      hasMore.value = true; // ✅ reset hasMore each refresh
+      pendingShipment.clear();
+
+      final endpoint = buildEndpoint();
+      log("Fetching: $endpoint");
+
+      var response = await apiRepository.getPendingShipment(
+        token: loginController.token.value,
+        pageNo: page,
+        url: endpoint,
+      );
+
+      if (response != null && response["success"] == true) {
+        final shipments = PendingShipment.listFromJson(response["data"]);
+        pendingShipment.assignAll(shipments);
+
+        if (shipments.isEmpty) {
+          hasMore.value = false;
+          AppToast.showError("No shipments found"); // ✅ show toast
+          log("No shipments found on first page");
+        } else {
+          page++;
+          log("Fetched ${shipments.length} shipments (page 1)");
         }
-        isLoading.value=false;
-      }catch(e){
-        isLoading.value=false;
-        log("Error: ${e.toString()}");
-        AppToast.showError(ErrorHandler.getErrorMessage(e));
-
+      } else {
+        AppToast.showError(response["message"]);
       }
+    } catch (e) {
+      AppToast.showError(ErrorHandler.getErrorMessage(e));
+      log("Error: ${e.toString()}");
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  /// Load next page (pagination)
+  Future<void> loadMoreTask() async {
+    if (isMoreLoading.value || !hasMore.value) {
+      if (!hasMore.value) {
+        AppToast.showError("No more data available"); // ✅ toast here
+      }
+      return;
     }
 
+    try {
+      isMoreLoading.value = true;
+      LoginController loginController = Get.put(LoginController());
 
+      final endpoint = buildEndpoint();
+      log("Load more: $endpoint");
+
+      var response = await apiRepository.getPendingShipment(
+        token: loginController.token.value,
+        pageNo: page,
+        url: endpoint,
+      );
+
+      if (response != null && response["success"] == true) {
+        final shipments = PendingShipment.listFromJson(response["data"]);
+
+        if (shipments.isNotEmpty) {
+          pendingShipment.addAll(shipments);
+          page++;
+          log("Loaded more: ${shipments.length} (next page: $page)");
+        } else {
+          hasMore.value = false;
+          AppToast.showError("No more data available"); // ✅ toast
+          log("No more shipments available (page $page)");
+        }
+      }
+    } catch (e) {
+      AppToast.showError(ErrorHandler.getErrorMessage(e));
+      log("Error load more: ${e.toString()}");
+    } finally {
+      isMoreLoading.value = false;
+    }
   }
+}

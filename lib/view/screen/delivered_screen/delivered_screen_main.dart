@@ -198,11 +198,12 @@ class _DeliveredScreenMainState extends State<DeliveredScreenMain> {
                           Icon(Icons.search,size: 22.sp,color: Colors.black.withOpacity(0.7),),
 
                           Spacer(),
-                          Obx(()=> Padding(
-                            padding:  EdgeInsets.only(right: 10.0.w),
+                        Obx(
+                              () => Padding(
+                            padding: EdgeInsets.only(right: 10.0.w),
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton<String>(
-                                value: pendingTaskController.selectedFilter.value,
+                                value: pendingTaskController.selectedFilterLabel.value,
                                 icon: Icon(Icons.arrow_drop_down, color: Colors.black),
                                 dropdownColor: Colors.white,
                                 isDense: true,
@@ -210,26 +211,37 @@ class _DeliveredScreenMainState extends State<DeliveredScreenMain> {
                                   color: Colors.black.withOpacity(0.7),
                                   fontSize: 16.sp,
                                 ),
-                                alignment: Alignment.centerLeft,
-                                padding: EdgeInsets.zero,
-                                items:pendingTaskController.filters.map((String value) {
+                                items: pendingTaskController.filterMap.keys.map((label) {
                                   return DropdownMenuItem<String>(
-                                    value:value,
-                                    child: Text(value),
+                                    value: label,
+                                    child: Text(label),
                                   );
                                 }).toList(),
-                                onChanged:(newValue) {
-                                  pendingTaskController.selectedFilter.value = newValue!;
-                                  showDialog(context: context, builder: (context){
-                                    return DateRangeDialog( onCancel: () {  Navigator.pop(context);}, onOk: () {Navigator.pop(context);  },);
-                                  });
+                                onChanged: (newLabel) {
+                                  pendingTaskController.selectedFilterLabel.value = newLabel!;
 
-
+                                  // check backend value instead of raw label
+                                  if (pendingTaskController.selectedFilterValue == "custom") {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return DateRangeDialog(
+                                          onCancel: () => Navigator.pop(context),
+                                          onOk: () => Navigator.pop(context),
+                                        );
+                                      },
+                                    );
+                                  } else {
+                                    // Example: call API with backend value
+                                    print("Send to API: ${pendingTaskController.selectedFilterValue}");
+                                  }
                                 },
                               ),
                             ),
                           ),
-                          ),
+                        ),
+
+
                         ],
                       ),
                     ),

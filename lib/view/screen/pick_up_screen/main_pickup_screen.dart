@@ -50,7 +50,6 @@ class _MainPickupScreenState extends State<MainPickupScreen> {
                    List<String> barcodeIds = allProductPickController.allProductPick
                        .map((item) => item.spAwbNumber??"")
                        .toList();
-
                    await confirmBarCodeController.confirmBarCode(barCodeIds: barcodeIds);
                  }else{
                    AppToast.showInfo("Please Scan Code First");
@@ -107,7 +106,8 @@ class _MainPickupScreenState extends State<MainPickupScreen> {
                           if (code.isNotEmpty) {
                             setState(() => isScanned = true);
                             await controller.stop();
-                            if (allProductPickController.barCodeId.contains(code)) {
+
+                            if (allProductPickController.allProductPick.value.contains(code)) {
                               QuickAlert.show(
                                 context: context,
                                 type: QuickAlertType.error,
