@@ -8,6 +8,10 @@ class PendingShipment {
   final String spAwbNumber;
   final String toAddress;
   final String to_mobile;
+  final String to_alternate_mobile;
+  final String contents;
+  final String amount;
+
   final Status status;
   final PaymentMethod paymentMethod;
   final City city;
@@ -22,6 +26,9 @@ class PendingShipment {
     required this.spAwbNumber,
     required this.toAddress,
     required this.to_mobile,
+    required this.to_alternate_mobile,
+    required this.contents,
+    required this.amount,
     required this.status,
     required this.paymentMethod,
     required this.city,
@@ -42,6 +49,9 @@ class PendingShipment {
       paymentMethod: PaymentMethod.fromJson(json['payment_method'] ?? {}),
       city: City.fromJson(json['city'] ?? {}),
       cityArea: CityArea.fromJson(json['city_area'] ?? {}),
+      to_alternate_mobile:json['to_alternate_mobile'] ?? '' ,
+      contents: json['contents'] ?? '',
+      amount: json['amount'] ?? '',
     );
   }
 

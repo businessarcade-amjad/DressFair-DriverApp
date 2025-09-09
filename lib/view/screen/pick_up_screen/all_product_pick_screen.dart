@@ -50,11 +50,9 @@ class _AllProductPickScreenState extends State<AllProductPickScreen> {
                   physics: BouncingScrollPhysics(),
                   itemCount: allProductPickController.allProductPick.length,
                   itemBuilder:(context,index){
-
                 return Padding(
                   padding:  EdgeInsets.symmetric(horizontal: 8.0.w,vertical: 8.0.h),
                   child: Container(
-
                     decoration: BoxDecoration( color: Colors.white,
                       borderRadius: BorderRadius.circular(10.r),
                      boxShadow: AppShadows.soft
@@ -97,10 +95,12 @@ containerColor: Colors.green,
                     width: 150.w, height: 50.h, onTap: (){
 
   Get.offNamed(pendingScreenMain);
-                }, textStyle: TextStyle(
+                },
+                    textStyle: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w600
-                ), borderRadius: 4.r, text:"Confirm PickUp"),
+                ), borderRadius: 4.r,
+                    text:"Confirm PickUp"),
               ],
             ),
 

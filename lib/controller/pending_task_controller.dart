@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:dressfair_driver_app/controller/login_controller.dart';
 import 'package:dressfair_driver_app/model/pending_task/pending_task.dart';
+import 'package:dressfair_driver_app/repository/service/network/api_response.dart';
 import 'package:dressfair_driver_app/repository/service/network/repository/pending_shipment/pending_shipment_repository.dart';
 import 'package:dressfair_driver_app/view/util/widgets/routes/screens_library.dart';
 
@@ -42,8 +43,8 @@ class PendingTaskController extends GetxController{
       }catch(e){
         isLoading.value=false;
         log("Error: ${e.toString()}");
+        AppToast.showError(ErrorHandler.getErrorMessage(e));
 
-        AppToast.showError( e.toString());
       }
     }
 

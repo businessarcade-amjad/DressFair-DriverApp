@@ -24,7 +24,6 @@ class _MainPickupScreenState extends State<MainPickupScreen> {
   Widget build(BuildContext context) {
     return Obx(
       ()=>
-
           Scaffold(
         floatingActionButton:FloatingActionButton(
           backgroundColor: AppColors.primaryColor,
@@ -48,11 +47,14 @@ class _MainPickupScreenState extends State<MainPickupScreen> {
               child: GestureDetector(
                 onTap:() async {
                  if(allProductPickController.allProductPick.isNotEmpty){
-                   await  confirmBarCodeController.confirmBarCode(barCodeIds: []);
+                   List<String> barcodeIds = allProductPickController.allProductPick
+                       .map((item) => item.spAwbNumber??"")
+                       .toList();
+
+                   await confirmBarCodeController.confirmBarCode(barCodeIds: barcodeIds);
                  }else{
                    AppToast.showInfo("Please Scan Code First");
                  }
-
                   //Get.offNamed(allProductPickScreen);
                 },
                 child: Container(
@@ -123,7 +125,7 @@ class _MainPickupScreenState extends State<MainPickupScreen> {
                               showCustomDialog(
                                 title: 'Scan Successfully',
                                 message: 'Save Scanned Qr Code Now',
-                                onConfirm: () async {
+                                onConfirm:() async {
                                   if (allProductPickController.barCodeId.value.isNotEmpty) {
                                     await allProductPickController.scanBarCode(
                                       barCodeId: allProductPickController.barCodeId.value,
@@ -133,7 +135,7 @@ class _MainPickupScreenState extends State<MainPickupScreen> {
                                   setState(() => isScanned = false);
                                   Get.back();
                                 },
-                                cancel: () async {
+                                cancel:() async {
                                   allProductPickController.barCodeId.value = "";
                                   Get.back();
                                   await controller.start();

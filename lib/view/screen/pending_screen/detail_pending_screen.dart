@@ -1,6 +1,6 @@
+import 'package:dressfair_driver_app/controller/simple_method/simple_methode.dart';
 import 'package:dressfair_driver_app/model/pending_task/pending_task.dart';
 import 'package:dressfair_driver_app/view/util/widgets/routes/screens_library.dart';
-import 'package:dressfair_driver_app/view/util/widgets/shadows_reuse/AppShadows.dart';
 
 class DetailPendingScreen extends StatefulWidget {
   final PendingShipment shipment;
@@ -27,7 +27,6 @@ class _DetailPendingScreenState extends State<DetailPendingScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            
             10.h.sh,
             Text("Order Details",style: TextStyle(fontWeight:FontWeight.w500),),
             10.h.sh,
@@ -60,12 +59,13 @@ class _DetailPendingScreenState extends State<DetailPendingScreen> {
                 children: [
                   Text("esk dxb",style: TextStyle(fontWeight:FontWeight.w500),),
                   30.w.sw,
-                  Text("Mobile No:",style:TextStyle(fontWeight:FontWeight.w400),),
+                  Text("Mobile No : ",style:TextStyle(fontWeight:FontWeight.w400),),
                   Text("${widget.shipment.to_mobile}",style:TextStyle(fontWeight:FontWeight.w500),),
                 ],
               ),
             ),
             30.w.sw,
+            10.h.sh,
             Container(
               width: MediaQuery.sizeOf(context).width*0.93,
               child: Row(
@@ -82,96 +82,102 @@ class _DetailPendingScreenState extends State<DetailPendingScreen> {
                 ],
               ),
             ),
-            30.h.sh,
+            10.h.sh,
             Container(
-              width: MediaQuery.sizeOf(context).width,
-              height: MediaQuery.sizeOf(context).height*0.25,
-              decoration: BoxDecoration(
-                color: Colors.white,
-boxShadow: AppShadows.softBottom,
-                borderRadius: BorderRadius.circular(10.r)
-              ),
+              width: MediaQuery.sizeOf(context).width*0.93,
               child: Row(
-
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
-                Container(
-                  height: 110.h,
-                  width: 110.w,
-
-                  decoration: BoxDecoration(
-                      //color: Colors.red,
-                    image: DecorationImage(image: AssetImage("assets/images/pending/pending_detail_images/place_holder.jpg"))
-                  ),
-                ),
+                  Text("Content: ",style: TextStyle(fontWeight:FontWeight.w400),),
                   Container(
-                    //color: Colors.red,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        20.h.sh,
-                        Text("Zipper Closure Solid Color",),
-                        Container(
 
-                            width: MediaQuery.sizeOf(context).width*0.6,
-                            child: Text("Breathable Shoes for Ladies - Light Green",maxLines: 2,softWrap: true,overflow: TextOverflow.ellipsis,)),
-                        Container(
-                            width: MediaQuery.sizeOf(context).width*0.6,
-                            child: Text("Quantity 1  Price: 54.00 AED",maxLines: 2,softWrap: true,overflow: TextOverflow.ellipsis,)),
-                        Text("Total 54.00 AED",softWrap:true,style: TextStyle(color: Colors.red),),
-                        Container(
-                            width: MediaQuery.sizeOf(context).width*0.6,
-                            child: Text("Color: Light Green Size: 37",maxLines: 2,softWrap: true,overflow: TextOverflow.ellipsis,)),
-                        
-                        
-                        
+                      width: MediaQuery.sizeOf(context).width*0.7,
+                      child: Text("${widget.shipment.contents}",overflow:TextOverflow.ellipsis,style: TextStyle(fontWeight:FontWeight.w400),maxLines: 2,softWrap: true,)),
 
-                      ],
-                    ),
-                  )
 
                 ],
               ),
             ),
+            10.h.sh,
+            Container(
+              width: MediaQuery.sizeOf(context).width*0.93,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Amount: ",style: TextStyle(fontWeight:FontWeight.w400,color: Colors.red),),
+                  Container(
+                      width: MediaQuery.sizeOf(context).width*0.7,
+                      child: Text("${widget.shipment.amount} ",overflow:TextOverflow.ellipsis,style: TextStyle(fontWeight:FontWeight.w400),maxLines: 2,softWrap: true,)),
+
+
+                ],
+              ),
+            ),
+            30.h.sh,
+
             Spacer(),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               physics: BouncingScrollPhysics(),
-              child: Row(
-                children: [
-                  5.w.sw,
-                  Container(
-                    height: 35.h,
-                    width: 35.w,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(image: AssetImage(AppImages.callIcon))
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    5.w.sw,
+                    GestureDetector(
+                      onTap: (){
+                        SimpleMethode.openPhone("+923309189520");
+                      },
+                      child: Container(
+                        height: 35.h,
+                        width: 35.w,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(image: AssetImage(AppImages.callIcon))
+                        ),
+                      ),
                     ),
-                  ),
-                  5.w.sw,
-                  Text("CALL"),
-                  10.w.sw,
-                  Container(
-                    height: 35.h,
-                    width: 35.w,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(image: AssetImage(AppImages.whatsappIcon))
+                    5.w.sw,
+                    GestureDetector(
+
+                        onTap: (){
+                          SimpleMethode.openPhone("+923309189520");
+                        },
+                        child: Text("CALL")),
+                    13.w.sw,
+                    GestureDetector(
+                      onTap: () async {
+                        await SimpleMethode().openWhatsApp("03095953304");
+                      },
+                      child: Container(
+                        height: 35.h,
+                        width: 35.w,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(image: AssetImage(AppImages.whatsappIcon))
+                        ),
+                      ),
                     ),
-                  ),
-                  5.w.sw,
-                  Text("Whats App"),
-                  10.w.sw,
-                  Container(
-                    height: 35.h,
-                    width: 35.w,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(image: AssetImage(AppImages.locationIcon))
+                    5.w.sw,
+                    GestureDetector(
+                        onTap: () async {
+                          await SimpleMethode().openWhatsApp("03095953304");
+                        },
+                        child: Text("Whats App")),
+                    14.w.sw,
+                    Container(
+                      height: 35.h,
+                      width: 35.w,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(image: AssetImage(AppImages.locationIcon))
+                      ),
                     ),
-                  ),
-                  5.w.sw,
-                  Text("Location"),
-                  5.w.sw,
-                ],
+                    5.w.sw,
+                    Text("Location"),
+                    5.w.sw,
+                  ],
+                ),
               ),
             ),
             30.h.sh,

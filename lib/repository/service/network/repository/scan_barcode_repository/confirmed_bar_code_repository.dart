@@ -10,7 +10,7 @@ class ConfirmBarCodeRepository{
     required String token,
   }) async {
     Map<String, List<String>> body={
-      "sp_awb_numbers": ['971152052']
+      "sp_awb_numbers": barCodeIds
       //barCodeIds,
     };
     try {

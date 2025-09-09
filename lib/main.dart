@@ -1,5 +1,4 @@
-import 'package:device_preview/device_preview.dart';
-import 'package:dressfair_driver_app/view/util/shared_prefrences/user_prefrences.dart';
+
 import 'package:dressfair_driver_app/view/util/widgets/routes/myroutes.dart';
 import 'package:dressfair_driver_app/view/util/widgets/routes/screens_library.dart';
 
@@ -19,6 +18,8 @@ Future<void> main() async{
   );
 }
 class MyApp extends StatelessWidget {
+
+
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {

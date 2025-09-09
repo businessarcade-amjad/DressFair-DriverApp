@@ -1,6 +1,5 @@
 import 'package:dressfair_driver_app/controller/pending_task_controller.dart';
 import 'package:dressfair_driver_app/view/util/dialog/filter_dialog.dart';
-import 'package:dressfair_driver_app/view/util/dialog/loading_dialog.dart';
 import 'package:dressfair_driver_app/view/util/dialog/more_button_dialog.dart';
 import 'package:dressfair_driver_app/view/util/widgets/routes/screens_library.dart';
 
@@ -16,17 +15,12 @@ class _PendingScreenMainState extends State<PendingScreenMain> {
     WidgetsBinding.instance.addPostFrameCallback((v){
       pendingTaskController.pendingTask();
     });
-
-
     super.initState();
   }
-
   Widget pendingCard(){
-    return
-      pendingTaskController.isLoading.value?
+    return pendingTaskController.isLoading.value?
       Center(child: CircularProgressIndicator(color: AppColors.primaryColor,)):
       pendingTaskController.pendingShipment.isEmpty?Text("No Data Found"):
-
       ListView.builder(
                itemCount: pendingTaskController.pendingShipment.length,
                padding: EdgeInsets.zero,
@@ -133,7 +127,7 @@ var item=pendingTaskController.pendingShipment[index];
                                        style: TextStyle(color: Colors.black,fontWeight: FontWeight.w400,fontSize: 14.sp),),
                                      Container(
                                        //color: Colors.green,
-                                       width: MediaQuery.sizeOf(context).width*0.52,
+                                       width: MediaQuery.sizeOf(context).width*0.49,
                                        child: Text("${item.cityArea.name} ${item.toAddress} ",
                                          maxLines: 2,
 

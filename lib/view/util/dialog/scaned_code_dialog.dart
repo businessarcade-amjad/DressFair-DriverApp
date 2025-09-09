@@ -26,12 +26,8 @@ void showCustomDialog({
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-
               Icon(Icons.check_circle, color: AppColors.primaryColor, size: 60.sp),
-
                SizedBox(height: 12.h),
-
-
               Text(
                 title,
                 style:  TextStyle(
@@ -76,6 +72,7 @@ Row(
               height: 10.h,
               width: 10.w,
               child: CircularProgressIndicator(
+                strokeWidth: 1,
 value: 0.5,
                 color: Colors.white,),
             ),
