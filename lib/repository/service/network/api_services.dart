@@ -11,7 +11,7 @@ abstract class BaseApiServices {
   Future<dynamic> fetchGetResponse(String url, {String token = ""});
   Future<dynamic> sendPostRequest(String url, dynamic data,
       {String? token = ""});
-  Future<dynamic> sendPutRequest(String url, dynamic data);
+  Future<dynamic> sendPutRequest(String url, dynamic data, {String token = ""});
   Future<dynamic> sendPatchRequest(String url, dynamic data);
   Future<dynamic> sendDeleteRequest(String url, dynamic data,
       {String? token = ""});
@@ -126,24 +126,37 @@ class NetworkApiService extends BaseApiServices {
   }
 
   @override
-  Future sendPutRequest(String url, dynamic data) async {
+  Future sendPutRequest(String url, dynamic data, {String token = ""}) async {
     dynamic responseJson;
     try {
-      var response = await http.put(Uri.parse(url), body: data, headers: {
-        "Content-Type": "application/json"
-      }).timeout(const Duration(seconds: 10));
+      var head = token != ""
+          ? {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      }
+          : {
+        'Content-Type': 'application/json',
+      };
+
+      final response = await http.put(
+        Uri.parse(url),
+        body: jsonEncode(data), // 🔥 Encode body to JSON
+        headers: head,
+      ).timeout(const Duration(seconds: 10));
+
       responseJson = responseClass.returnResponse(response);
     } on SocketException {
-      //FirebaseCrashlytics.instance.recordError(FetchDataException('No Internet Connection'), StackTrace.current);
       throw FetchDataException('No Internet Connection');
     } catch (e, s) {
-      // This will catch all other exceptions
-      //FirebaseCrashlytics.instance.recordError(e, s); // Log every exception to Crashlytics
       throw FetchDataException(
-          'Failed to send POST request due to an unexpected error: $e'); // Provide more detailed error message
+        'Failed to send PUT request due to an unexpected error: $e',
+      );
     }
     return responseJson;
   }
+
+
+
 
   @override
   Future sendPatchRequest(String url, dynamic data,

@@ -9,3 +9,6 @@ const String deliveredScreenMain = '/DeliveredScreenMain';
 const String detailDeliveredScreen = '/DetailDeliveredScreen';
 const String mainPickupScreen = '/MainPickupScreen';
 const String allProductPickScreen = '/AllProductPickScreen';
+const String ofdScreenMain = '/OfdScreenMain';
+const String detailOfdScreen = '/DetailOfdScreen';
+const String remarkScreen = '/RemarkScreen';

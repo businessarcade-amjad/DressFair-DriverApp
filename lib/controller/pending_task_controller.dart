@@ -1,3 +1,4 @@
+
 import 'dart:developer';
 import 'package:dressfair_driver_app/repository/service/network/api_response.dart';
 import 'package:get/get.dart';
@@ -23,11 +24,18 @@ class PendingTaskController extends GetxController {
   };
 
   /// For custom range
-  String? dateFrom;
-  String? dateTo;
+  RxString? fullDateFrom="".obs;
+  RxString? fullDateTo="".obs;
+  Rx<TextEditingController> monthFrom = TextEditingController(text: "09").obs;
+  Rx<TextEditingController> dayFrom = TextEditingController(text: "01").obs;
+  Rx<TextEditingController> yearFrom = TextEditingController(text: "2025").obs;
+  Rx<TextEditingController> monthTo = TextEditingController(text: "01").obs;
+  Rx<TextEditingController> dayTo = TextEditingController(text: "01").obs;
+  Rx<TextEditingController> yearTo = TextEditingController(text:"2026").obs;
+
   String get selectedFilterValue =>
       filterMap[selectedFilterLabel.value] ?? "all";
-
+RxBool showSelectALl=false.obs;
   RxList<PendingShipment> pendingShipment = <PendingShipment>[].obs;
   final PendingShipmentRepository apiRepository = PendingShipmentRepository();
 
@@ -48,7 +56,7 @@ class PendingTaskController extends GetxController {
     }
     if (filter == "custom") {
       String endpoint =
-          "${AppUrl.pendingShipment}?by_duration=custom&date_from=$dateFrom&date_to=$dateTo";
+          "${AppUrl.pendingShipment}?by_duration=custom&date_from=$fullDateFrom&date_to=$fullDateTo";
       if (page > 1) endpoint += "&page=$page";
       return endpoint;
     }
@@ -83,7 +91,7 @@ class PendingTaskController extends GetxController {
 
         if (shipments.isEmpty) {
           hasMore.value = false;
-          AppToast.showError("No shipments found"); // ✅ show toast
+          AppToast.showError("No shipments found");
           log("No shipments found on first page");
         } else {
           page++;

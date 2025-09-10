@@ -19,7 +19,7 @@ class _DetailPendingScreenState extends State<DetailPendingScreen> {
         automaticallyImplyLeading: false,
         backgroundColor: AppColors.primaryColor,
         centerTitle: true,
-        title: Text("Total 69.00 AED",style: TextStyle(color: AppColors.whiteColor,fontSize: 16.sp),),
+        title: Text("Total ${widget.shipment.amount} ${widget.shipment.currency?.code??""}",style: TextStyle(color: AppColors.whiteColor,fontSize: 16.sp),),
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 14.0.w),

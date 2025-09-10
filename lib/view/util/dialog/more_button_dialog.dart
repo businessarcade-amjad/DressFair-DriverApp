@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:dressfair_driver_app/controller/simple_method/simple_methode.dart';
+import 'package:dressfair_driver_app/controller/user_location_controller/user_location_controller.dart';
 import 'package:dressfair_driver_app/view/util/constant/image_constant.dart';
 import '../widgets/routes/screens_library.dart';
 
@@ -81,23 +82,31 @@ surfaceTintColor: Colors.white,
               ),
             ),
             40.w.sw,
-            Container(
-              color: Colors.white,
-              height: 100.h,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 40.h,
-                    width: 40.w,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(image: AssetImage(AppImages.locationIcon))
+            GestureDetector(
+              onTap: () async {
+                Get.back();
+                final controller = Get.find<UserLocationController>();
+                await controller.getCurrentLocation();
+                await controller.openGoogleMap(33.529000, 73.100000);
+              },
+              child: Container(
+                color: Colors.white,
+                height: 100.h,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 40.h,
+                      width: 40.w,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(image: AssetImage(AppImages.locationIcon))
+                      ),
                     ),
-                  ),
-                  5.h.sh,
-                  Text("Location",style: TextStyle(fontSize: 14.sp,fontWeight: FontWeight.w500),)
-                ],
+                    5.h.sh,
+                    Text("Location",style: TextStyle(fontSize: 14.sp,fontWeight: FontWeight.w500),)
+                  ],
+                ),
               ),
             ),
             26.w.sw,

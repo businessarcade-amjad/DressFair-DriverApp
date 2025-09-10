@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'package:dressfair_driver_app/model/user_profile_model/user_profile_model.dart';
-import 'package:dressfair_driver_app/repository/service/network/api_response.dart';
 import 'package:dressfair_driver_app/repository/service/network/repository/sign_in_repository/sign_in_repository.dart';
 import 'package:dressfair_driver_app/view/util/widgets/routes/screens_library.dart';
 import 'package:http/http.dart' as http;

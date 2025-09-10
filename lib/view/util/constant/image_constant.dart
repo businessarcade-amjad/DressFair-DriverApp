@@ -10,4 +10,5 @@ class AppImages{
   static String callIcon="assets/images/pending/pending_detail_images/call_icon.png";
   static String locationIcon="assets/images/pending/pending_detail_images/location.png";
   static String whatsappIcon="assets/images/pending/pending_detail_images/whatsapp_icon.png";
+  static String ofdIcon="assets/images/home_screen/ofd.png";
 }
