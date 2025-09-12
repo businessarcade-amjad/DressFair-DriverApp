@@ -16,6 +16,7 @@ class _OfdScreenMainState extends State<OfdScreenMain> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      ofdController.allOfd.clear();
       //pendingTaskController.selectedFilterLabel.value="All Record";
       ofdController.showAllOfd();
     });
@@ -233,7 +234,7 @@ class _OfdScreenMainState extends State<OfdScreenMain> {
             automaticallyImplyLeading: false,
             centerTitle: true,
             backgroundColor: AppColors.primaryColor,
-            title: Text("Order For Delivery",style: TextStyle(fontSize: 18.sp,color: AppColors.whiteColor,fontWeight: FontWeight.w600), ),
+            title: Text("Out For Delivery",style: TextStyle(fontSize: 18.sp,color: AppColors.whiteColor,fontWeight: FontWeight.w600), ),
           ),
 
           /* floatingActionButton: FloatingActionButton(

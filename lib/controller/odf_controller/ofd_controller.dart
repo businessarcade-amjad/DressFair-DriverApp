@@ -8,28 +8,32 @@ class OfdController extends GetxController{
   RxBool isLoading = false.obs;
 
   RxList<ShowOfdsModel> allOfd=<ShowOfdsModel>[].obs;
-  Future<void> confirmOfd({required List<String> ofdConfirmIds})async{
-    try{
-      isLoading.value=true;
-      var response= await apiRepository.ofdConfirm(ids: ofdConfirmIds);
-      if (response != null && response["success"] == true) {
-
-        AppToast.showError( response["message"]);
-        log("Response == $response}");
-        Get.offNamed(ofdScreenMain);
-      }else{
-        AppToast.showError( response["message"]);
+  Future<void> confirmOfd({required List<String> ofdConfirmIds})async {
+    if (await InternetController.checkUserConnection()) {
+      try {
+        isLoading.value = true;
+        var response = await apiRepository.ofdConfirm(ids: ofdConfirmIds);
+        if (response != null && response["success"] == true) {
+          AppToast.showError(response["message"]);
+          log("Response == $response}");
+          Get.offNamed(ofdScreenMain);
+        } else {
+          AppToast.showError(response["message"]);
+        }
+        isLoading.value = false;
+      } catch (e) {
+        isLoading.value = false;
+        log("Error: ${e.toString()}");
+        AppToast.showError(ErrorHandler.getErrorMessage(e));
       }
-      isLoading.value=false;
-    }catch(e){
-      isLoading.value=false;
-      log("Error: ${e.toString()}");
-      AppToast.showError(ErrorHandler.getErrorMessage(e));
+    }
+    else {
+      AppToast.showError("Internet Disconnected");
     }
   }
 
-
   Future<void> showAllOfd()async{
+    if (await InternetController.checkUserConnection()) {
     try{
       isLoading.value=true;
       var response= await apiRepository.showOfd();
@@ -46,6 +50,10 @@ class OfdController extends GetxController{
       isLoading.value=false;
       log("Error 123: ${e.toString()}");
       AppToast.showError(ErrorHandler.getErrorMessage(e));
-    }
+
+  }
+    }else{
+      AppToast.showError("Internet Disconnected");
+  }
   }
 }

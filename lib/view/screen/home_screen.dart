@@ -18,6 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         backgroundColor: Colors.white,
           body: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
             child: Column(
                 children: [
                   Container(
@@ -68,8 +69,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                               40.h.sh,
-
-
                             ],
                           ),
 
@@ -82,10 +81,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         }, onTap2: () {
                           Get.toNamed(pendingScreenMain);
                         },)),
-
                       ],
                     ),
-
                   ),
                   20.h.sh,
                   FeatureCards(text1:"OFD",icon1:AppImages.ofdIcon, text2:'DELIVERED', icon2: AppImages.deliveredIcon, onTap1: () {
@@ -95,12 +92,22 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   ),
                   20.h.sh,
-                  FeatureCards(text1: "RETURNED", icon1:  AppImages.returnedIcon, text2: 'RETURNED', icon2: AppImages.returnedIcon, onTap1: () {
+                  FeatureCards(
+                    text1: "TO RETURN", icon1:  AppImages.returnedIcon, text2: 'Finance', icon2: AppImages.finance, onTap1: () {
                     Get.toNamed(returnedScreenMain);
                   }, onTap2: () {
                     //Get.toNamed(returnedScreenMain);
                   },
-                  isShowSecondCard: false,
+                  isShowSecondCard: true,
+                  ),
+                  20.h.sh,
+                  FeatureCards(text1: "RTS", icon1:AppImages.returnedIcon, text2: 'RETURNED', icon2: AppImages.returnedIcon, onTap1: () {
+                    Get.toNamed(returnedScreenMain);
+                  },
+                    onTap2: () {
+                    //Get.toNamed(returnedScreenMain);
+                  },
+                    isShowSecondCard: false,
                   ),
 
                 ]),

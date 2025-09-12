@@ -19,10 +19,10 @@ class _PendingScreenMainState extends State<PendingScreenMain> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      pendingTaskController.pendingShipment.clear();
       pendingTaskController.selectedFilterLabel.value="All Record";
       pendingTaskController.pendingTask();
     });
-
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
           _scrollController.position.maxScrollExtent - 200) {
@@ -30,7 +30,6 @@ class _PendingScreenMainState extends State<PendingScreenMain> {
       }
     });
   }
-
   Widget pendingCard() {
     if (pendingTaskController.isLoading.value) {
       return Center(
@@ -129,7 +128,7 @@ class _PendingScreenMainState extends State<PendingScreenMain> {
                                       color: Colors.black,
                                       fontWeight: FontWeight.w400,
                                       fontSize: 14.sp)),
-                              Text(" 971565345225",
+                              Text(" ${item.toMobile}",
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w400,

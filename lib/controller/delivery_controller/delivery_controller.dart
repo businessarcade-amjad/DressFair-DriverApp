@@ -63,6 +63,10 @@ class DeliveryController extends GetxController{
 
   /// Fetch first page (refresh)
   Future<void> deliveredTask() async {
+    if (await InternetController.checkUserConnection()) {
+
+
+
     try {
       LoginController loginController = Get.put(LoginController());
       isLoading.value = true;
@@ -100,6 +104,9 @@ class DeliveryController extends GetxController{
       log("Error: ${e.toString()}");
     } finally {
       isLoading.value = false;
+    }    }else{
+      AppToast.showError("Internet Disconnected");
+
     }
   }
 
@@ -145,5 +152,37 @@ class DeliveryController extends GetxController{
       isMoreLoading.value = false;
     }
   }
+
+  ///Confirm Deliver:
+  Future<void> confirmDeliver({required String productID,required int isSigned}) async {
+    if (await InternetController.checkUserConnection()) {
+    try {
+      isLoading.value = true;
+      LoginController loginController = Get.put(LoginController());
+      var response = await apiRepository.confirmDeliver(
+          token: loginController.token.value,
+          url: AppUrl.deliver,
+          is_signed: isSigned,
+          sp_awb_number: productID);
+
+      if (response != null && response["success"] == true) {
+        AppToast.showError(response['message']);
+        Get.offAllNamed(homeScreen);
+        isLoading.value=false;
+      }
+        else {
+          AppToast.showError(response['message']);
+        }
+      isLoading.value = false;
+    } catch (e) {
+      AppToast.showError(ErrorHandler.getErrorMessage(e));
+      isLoading.value = false;
+    } finally {
+      isLoading.value = false;
+    }
+  }else{
+      AppToast.showError("Internet Disconnected");
+    }
+    }
 }
 

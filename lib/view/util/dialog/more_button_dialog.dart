@@ -85,7 +85,7 @@ surfaceTintColor: Colors.white,
             GestureDetector(
               onTap: () async {
                 Get.back();
-                final controller = Get.find<UserLocationController>();
+                final UserLocationController controller = Get.put(UserLocationController());
                 await controller.getCurrentLocation();
                 await controller.openGoogleMap(33.529000, 73.100000);
               },

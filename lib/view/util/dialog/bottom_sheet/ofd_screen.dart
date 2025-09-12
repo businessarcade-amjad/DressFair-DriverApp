@@ -1,9 +1,11 @@
+import 'package:dressfair_driver_app/model/showofd_model/showofd_model.dart';
 import 'package:dressfair_driver_app/view/util/widgets/routes/screens_library.dart';
 import 'package:get/get.dart';
 
 class OfdReasonBottomSheet extends StatelessWidget {
-  String productID;
-   OfdReasonBottomSheet({super.key,required this.productID});
+
+  final ShowOfdsModel ofd;
+   OfdReasonBottomSheet({super.key,required this.ofd});
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +31,13 @@ class OfdReasonBottomSheet extends StatelessWidget {
               title: const Text("Not Responding"),
               onTap: () {
                 Get.back();
-                Get.toNamed(remarkScreen,arguments: {"productID": productID,
-                  "statusCode": "2",
-                });
+                Get.toNamed(remarkScreen,
+                  arguments: {
+                    "ofd": ofd,
+                    "statusCode": "2",
+                    "statusName": "Not Responding",
+                  },
+                );
 
               },
             ),
@@ -40,9 +46,13 @@ class OfdReasonBottomSheet extends StatelessWidget {
               title: const Text("Wrong Address"),
               onTap: () {
                 Get.back();
-                Get.toNamed(remarkScreen,arguments: {"productID": productID,
-                  "statusCode": "3",
-                });
+                Get.toNamed(remarkScreen,
+                  arguments: {
+                    "ofd": ofd,
+                    "statusCode": "3",
+                    "statusName": "Wrong Address",
+                  },
+                );
               },
             ),
             ListTile(
@@ -50,9 +60,13 @@ class OfdReasonBottomSheet extends StatelessWidget {
               title: const Text("Future Delivery"),
               onTap:(){
                 Get.back();
-                Get.toNamed(remarkScreen,arguments: {"productID": productID,
-                  "statusCode": "4",
-                });
+                Get.toNamed(remarkScreen,
+                  arguments: {
+                    "ofd": ofd,
+                    "statusCode": "4",
+                    "statusName": "Future Delivery",
+                  },
+                );
               },
             ),
           ],

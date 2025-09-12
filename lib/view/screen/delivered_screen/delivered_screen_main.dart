@@ -19,6 +19,7 @@ class _DeliveredScreenMainState extends State<DeliveredScreenMain> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      deliveryController.deliverShipment.clear();
       deliveryController.selectedFilterLabel.value="All Record";
       deliveryController.deliveredTask();
     });

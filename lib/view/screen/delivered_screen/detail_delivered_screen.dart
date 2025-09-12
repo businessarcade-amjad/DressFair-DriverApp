@@ -54,8 +54,6 @@ class _DetailDeliveredScreenState extends State<DetailDeliveredScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("esk dxb",style: TextStyle(fontWeight:FontWeight.w500),),
-                  30.w.sw,
                   Text("Mobile No : ",style:TextStyle(fontWeight:FontWeight.w400),),
                   Text("${widget.shipment?.toMobile??""}",style:TextStyle(fontWeight:FontWeight.w500),),
                 ],

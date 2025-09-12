@@ -3,18 +3,23 @@ import 'package:dressfair_driver_app/model/user_profile_model/user_profile_model
 import 'package:dressfair_driver_app/repository/service/network/repository/sign_in_repository/sign_in_repository.dart';
 import 'package:dressfair_driver_app/view/util/widgets/routes/screens_library.dart';
 import 'package:http/http.dart' as http;
+
 class LoginController extends GetxController {
   Rx<TextEditingController> phoneController = TextEditingController().obs;
   Rx<TextEditingController> passwordController = TextEditingController().obs;
   final SignInRepository apiRepository = SignInRepository();
-   RxList<String> countryCodes = [
-    "971",
-    "968",
+  RxList<String> countryCodes = [
+    "968", // Oman
+    "966", // Saudi Arabia
+    "971", // UAE (includes Dubai)
+    "974",
+    "92",// Qatar
   ].obs;
   RxString token = "".obs;
   RxString selectedCode = "971".obs;
   RxBool isObSecure = false.obs;
   RxBool isUserLoginIn = false.obs;
+
   ///Profile Data:
   var profile = Rxn<Profile>();
   void setUser(Profile info) => profile.value = info;
@@ -26,6 +31,9 @@ class LoginController extends GetxController {
   }
   RxBool isLoading = false.obs;
 Future<void> signInApi()async{
+
+
+  if(await InternetController.checkUserConnection()){
   var response;
   try{
     isLoading.value=true;
@@ -51,6 +59,10 @@ Future<void> signInApi()async{
     isLoading.value = false;
     log("Error: $e");
     AppToast.showError(ErrorHandler.getErrorMessage(e));
+  }
+  }
+  else{
+AppToast.showError("Internet Disconnected");
   }
 }
 }

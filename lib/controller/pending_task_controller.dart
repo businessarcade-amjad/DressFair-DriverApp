@@ -1,7 +1,4 @@
-
 import 'dart:developer';
-import 'package:dressfair_driver_app/repository/service/network/api_response.dart';
-import 'package:get/get.dart';
 import 'package:dressfair_driver_app/controller/login_controller.dart';
 import 'package:dressfair_driver_app/model/pending_task/pending_task.dart';
 import 'package:dressfair_driver_app/repository/service/network/repository/pending_shipment/pending_shipment_repository.dart';
@@ -55,8 +52,7 @@ RxBool showSelectALl=false.obs;
           : AppUrl.pendingShipment;
     }
     if (filter == "custom") {
-      String endpoint =
-          "${AppUrl.pendingShipment}?by_duration=custom&date_from=$fullDateFrom&date_to=$fullDateTo";
+      String endpoint="${AppUrl.pendingShipment}?by_duration=custom&date_from=$fullDateFrom&date_to=$fullDateTo";
       if (page > 1) endpoint += "&page=$page";
       return endpoint;
     }
@@ -67,15 +63,14 @@ RxBool showSelectALl=false.obs;
 
   /// Fetch first page (or refresh) — clears list and resets page to 1
   Future<void> pendingTask() async {
+    if(await InternetController.checkUserConnection()){
     try {
       LoginController loginController = Get.put(LoginController());
       isLoading.value = true;
-
       // reset
       page = 1;
-      hasMore.value = true; // ✅ reset hasMore each refresh
+      hasMore.value = true;
       pendingShipment.clear();
-
       final endpoint = buildEndpoint();
       log("Fetching: $endpoint");
 
@@ -84,11 +79,10 @@ RxBool showSelectALl=false.obs;
         pageNo: page,
         url: endpoint,
       );
-
       if (response != null && response["success"] == true) {
         final shipments = PendingShipment.listFromJson(response["data"]);
+       // log("Pending task ${}");
         pendingShipment.assignAll(shipments);
-
         if (shipments.isEmpty) {
           hasMore.value = false;
           AppToast.showError("No shipments found");
@@ -105,6 +99,9 @@ RxBool showSelectALl=false.obs;
       log("Error: ${e.toString()}");
     } finally {
       isLoading.value = false;
+    }
+    }else{
+      AppToast.showError("Internet Disconnected");
     }
   }
 
@@ -139,7 +136,7 @@ RxBool showSelectALl=false.obs;
           log("Loaded more: ${shipments.length} (next page: $page)");
         } else {
           hasMore.value = false;
-          AppToast.showError("No more data available"); // ✅ toast
+          AppToast.showError("No more data available");
           log("No more shipments available (page $page)");
         }
       }

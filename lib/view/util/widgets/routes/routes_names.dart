@@ -12,3 +12,5 @@ const String allProductPickScreen = '/AllProductPickScreen';
 const String ofdScreenMain = '/OfdScreenMain';
 const String detailOfdScreen = '/DetailOfdScreen';
 const String remarkScreen = '/RemarkScreen';
+const String deliverySignScreen = '/DeliverySignScreen';
+

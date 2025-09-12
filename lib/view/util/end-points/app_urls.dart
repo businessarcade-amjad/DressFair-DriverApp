@@ -9,5 +9,6 @@ class AppUrl {
   static const showOfd = "$baseUrl/ofd";
   static const ofdFail = "$baseUrl/change/failed/status";
   static const returnedShipment = "$baseUrl/returned";
+  static const deliver = "$baseUrl/deliver";
 
 }

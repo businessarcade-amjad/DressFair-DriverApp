@@ -17,6 +17,7 @@ class  OfdFailController extends GetxController {
     required String remarks,
   })async{
     var response;
+    if (await InternetController.checkUserConnection()) {
     try{
       isLoading.value=true;
       response= await apiRepository.odfFail(productID: productID, failStatusId: failStatusId, remarks: remarkController.value.text);
@@ -37,5 +38,8 @@ Get.offNamed(homeScreen);
       log("Error 12344: $e");
       AppToast.showError(ErrorHandler.getErrorMessage(e));
     }
-  }
+    }
+  else{
+      AppToast.showError("Internet Disconnected");
+  }}
 }

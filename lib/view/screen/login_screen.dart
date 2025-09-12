@@ -137,8 +137,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       vertical: 0.h,
                       horizontal: 8.w,
                     ),
-                    hintText: "528652260",
-                    hintStyle: TextStyle(fontSize: 15.sp, color: Colors.black.withOpacity(0.8)),
+                    hintText: "Enter Mobile No",
+                    hintStyle: TextStyle(fontSize: 15.sp, color: Colors.black.withOpacity(0.4)),
                   ),
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
@@ -188,7 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 obscureText: true,
                                 cursorColor: AppColors.primaryColor,
                                 style: TextStyle(
-                                  fontSize: 18.sp, // 🔹 increase text size
+                                  fontSize: 18.sp,
                                   color: Colors.black,
                                 ),
                                 decoration: InputDecoration(
@@ -202,7 +202,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     horizontal: 8.w,
                                   ),
                                   hintText: "Enter Your Password",
-                                  hintStyle: TextStyle(fontSize: 15.sp, color: Colors.black.withOpacity(0.8)),
+                                  hintStyle: TextStyle(fontSize: 15.sp, color: Colors.black.withOpacity(0.4)),
                                 ),
                               ),
                             ),

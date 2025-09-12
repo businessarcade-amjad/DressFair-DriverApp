@@ -1,7 +1,9 @@
 import 'package:dressfair_driver_app/model/delivery_model/delivery_model.dart';
 import 'package:dressfair_driver_app/model/pending_task/pending_task.dart';
+import 'package:dressfair_driver_app/model/returned_model/returned_model.dart';
 import 'package:dressfair_driver_app/model/showofd_model/showofd_model.dart';
 import 'package:dressfair_driver_app/view/screen/delivered_screen/delivered_screen_main.dart';
+import 'package:dressfair_driver_app/view/screen/delivered_screen/delivery_sign_screen.dart';
 import 'package:dressfair_driver_app/view/screen/delivered_screen/detail_delivered_screen.dart';
 import 'package:dressfair_driver_app/view/screen/ofd_screen/detail_ofd_screen.dart';
 import 'package:dressfair_driver_app/view/screen/ofd_screen/ofd_screen.dart';
@@ -35,7 +37,8 @@ class MyRoutes {
         final ofd = settings.arguments as ShowOfdsModel;
       return MaterialPageRoute(builder: (context) => DetailOfdScreen(ofd: ofd));
       case detailReturnedScreen:
-        return MaterialPageRoute(builder: (context) => const DetailReturnedScreen());
+        final returnedShipment = settings.arguments as ReturnedModel;
+        return MaterialPageRoute(builder: (context) =>  DetailReturnedScreen(returnedShipment:returnedShipment));
       case returnedScreenMain:
         return MaterialPageRoute(builder: (context) => const ReturnedScreenMain());
         case deliveredScreenMain:
@@ -46,10 +49,20 @@ class MyRoutes {
         return MaterialPageRoute(builder: (context) => const AllProductPickScreen());
         case ofdScreenMain:
         return MaterialPageRoute(builder: (context) => const OfdScreenMain());
-        case remarkScreen:
+        case deliverySignScreen:
           final args = settings.arguments as Map<String, dynamic>;
-        return MaterialPageRoute(builder: (context) =>  RemarkScreen( productID: args["productID"],
-          statusCode: args["statusCode"],));
+      return MaterialPageRoute(builder: (context) =>  DeliverySignScreen(
+        productID:  args["productID"]));
+      case remarkScreen:
+        final args = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(
+          builder: (context) => RemarkScreen(
+            ofd: args["ofd"] as ShowOfdsModel,
+            statusCode: args["statusCode"] as String,
+            statusName: args["statusName"] as String,
+          ),
+        );
+
     // case mainHomeScreen:
       //   return MaterialPageRoute(builder: (context) => const MainHomeScreen());
       // case chatScreen:

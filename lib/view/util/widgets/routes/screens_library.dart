@@ -18,5 +18,4 @@ export 'package:dressfair_driver_app/view/util/widgets/status_bar_widget/OrangeS
 export 'package:dressfair_driver_app/view/util/shared_prefrences/user_prefrences.dart';
 export 'package:dressfair_driver_app/view/util/widgets/reuseable_buttons/reuseable_fill_button.dart';
 export 'package:dressfair_driver_app/repository/service/network/api_response.dart';
-
-
+export 'package:dressfair_driver_app/controller/internet_connectivity_check/InternetController.dart';

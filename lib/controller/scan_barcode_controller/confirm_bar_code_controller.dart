@@ -9,29 +9,33 @@ class ConfirmBarCodeController extends GetxController{
 
   final ConfirmBarCodeRepository apiRepository = ConfirmBarCodeRepository();
   RxBool isLoading = false.obs;
-  Future<void> confirmBarCode({required List<String> barCodeIds})async{
-    ScanBarcodeController allProductPickController=Get.put(ScanBarcodeController());
-    try{
-      LoginController loginController =Get.put(LoginController());
+  Future<void> confirmBarCode({required List<String> barCodeIds})async {
+    ScanBarcodeController allProductPickController = Get.put(
+        ScanBarcodeController());
+    if (await InternetController.checkUserConnection()) {
+      try {
+        LoginController loginController = Get.put(LoginController());
 
-      isLoading.value=true;
-      var response= await apiRepository.confirmBarCode(barCodeIds: barCodeIds,token:loginController.token.value );
-      if (response != null && response["success"] == true) {
+        isLoading.value = true;
+        var response = await apiRepository.confirmBarCode(
+            barCodeIds: barCodeIds, token: loginController.token.value);
+        if (response != null && response["success"] == true) {
+          allProductPickController.allProductPick.clear();
+          AppToast.showError(response["message"]);
+        } else {
+          allProductPickController.allProductPick.clear();
+          AppToast.showError(response["message"]);
+        }
+        isLoading.value = false;
+      } catch (e) {
         allProductPickController.allProductPick.clear();
-        AppToast.showError( response["message"]);
-      }else{
-        allProductPickController.allProductPick.clear();
-        AppToast.showError( response["message"]);
+        isLoading.value = false;
+        log("Error: ${e.toString()}");
+        AppToast.showError(ErrorHandler.getErrorMessage(e));
       }
-      isLoading.value=false;
-    }catch(e){
-      allProductPickController.allProductPick.clear();
-      isLoading.value=false;
-      log("Error: ${e.toString()}");
-      AppToast.showError(ErrorHandler.getErrorMessage(e));
-
+    }
+    else {
+      AppToast.showError("Internet Disconnected");
     }
   }
-
-
 }
