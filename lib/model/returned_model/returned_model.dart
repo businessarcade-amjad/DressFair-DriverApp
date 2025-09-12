@@ -1,5 +1,3 @@
-
-
 class ReturnedModel {
   final int id;
   final int tenantId;
@@ -14,11 +12,14 @@ class ReturnedModel {
   final String? toAlternateMobile;
   final String contents;
   final String amount;
+  final String deliveryLat; // map_latitude
+  final String deliveryLng; // map_longitude
   final Status status;
   final PaymentMethod paymentMethod;
   final City city;
   final CityArea cityArea;
   final Currency currency;
+  double? distanceKm;
 
   ReturnedModel({
     required this.id,
@@ -34,11 +35,14 @@ class ReturnedModel {
     this.toAlternateMobile,
     required this.contents,
     required this.amount,
+    required this.deliveryLat,
+    required this.deliveryLng,
     required this.status,
     required this.paymentMethod,
     required this.city,
     required this.cityArea,
     required this.currency,
+    this.distanceKm, // 👈 allow injection
   });
 
   factory ReturnedModel.fromJson(Map<String, dynamic> json) {
@@ -56,6 +60,8 @@ class ReturnedModel {
       toAlternateMobile: json['to_alternate_mobile'],
       contents: json['contents'] ?? '',
       amount: json['amount'] ?? '',
+      deliveryLat: json['map_latitude']?.toString() ?? "",
+      deliveryLng: json['map_longitude']?.toString() ?? "",
       status: Status.fromJson(json['status']),
       paymentMethod: PaymentMethod.fromJson(json['payment_method']),
       city: City.fromJson(json['city']),
@@ -79,19 +85,23 @@ class ReturnedModel {
       'to_alternate_mobile': toAlternateMobile,
       'contents': contents,
       'amount': amount,
+      'map_latitude': deliveryLat?.toString() ?? "",
+      'map_longitude': deliveryLng?.toString() ?? "",
       'status': status.toJson(),
       'payment_method': paymentMethod.toJson(),
       'city': city.toJson(),
       'city_area': cityArea.toJson(),
       'currency': currency.toJson(),
     };
-
   }
+
   /// ✅ Parse list safely
   static List<ReturnedModel> listFromJson(dynamic json) {
     if (json == null) return [];
     if (json is List) {
-      return json.map((e) => ReturnedModel.fromJson(Map<String, dynamic>.from(e))).toList();
+      return json
+          .map((e) => ReturnedModel.fromJson(Map<String, dynamic>.from(e)))
+          .toList();
     }
     throw ArgumentError('Invalid JSON passed to DeliveredModel.listFromJson');
   }
@@ -104,17 +114,11 @@ class Status {
   Status({required this.id, required this.name});
 
   factory Status.fromJson(Map<String, dynamic> json) {
-    return Status(
-      id: json['id'],
-      name: json['name'] ?? '',
-    );
+    return Status(id: json['id'], name: json['name'] ?? '');
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-    };
+    return {'id': id, 'name': name};
   }
 }
 
@@ -123,11 +127,7 @@ class PaymentMethod {
   final String name;
   final String code;
 
-  PaymentMethod({
-    required this.id,
-    required this.name,
-    required this.code,
-  });
+  PaymentMethod({required this.id, required this.name, required this.code});
 
   factory PaymentMethod.fromJson(Map<String, dynamic> json) {
     return PaymentMethod(
@@ -138,11 +138,7 @@ class PaymentMethod {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'code': code,
-    };
+    return {'id': id, 'name': name, 'code': code};
   }
 }
 
@@ -153,17 +149,11 @@ class City {
   City({required this.id, required this.name});
 
   factory City.fromJson(Map<String, dynamic> json) {
-    return City(
-      id: json['id'],
-      name: json['name'] ?? '',
-    );
+    return City(id: json['id'], name: json['name'] ?? '');
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-    };
+    return {'id': id, 'name': name};
   }
 }
 
@@ -174,17 +164,11 @@ class CityArea {
   CityArea({required this.id, required this.name});
 
   factory CityArea.fromJson(Map<String, dynamic> json) {
-    return CityArea(
-      id: json['id'],
-      name: json['name'] ?? '',
-    );
+    return CityArea(id: json['id'], name: json['name'] ?? '');
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-    };
+    return {'id': id, 'name': name};
   }
 }
 
@@ -202,9 +186,6 @@ class Currency {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'code': code,
-      'laravel_through_key': laravelThroughKey,
-    };
+    return {'code': code, 'laravel_through_key': laravelThroughKey};
   }
 }

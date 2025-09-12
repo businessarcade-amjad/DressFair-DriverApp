@@ -5,6 +5,7 @@ import 'package:dressfair_driver_app/model/showofd_model/showofd_model.dart';
 import 'package:dressfair_driver_app/view/screen/delivered_screen/delivered_screen_main.dart';
 import 'package:dressfair_driver_app/view/screen/delivered_screen/delivery_sign_screen.dart';
 import 'package:dressfair_driver_app/view/screen/delivered_screen/detail_delivered_screen.dart';
+import 'package:dressfair_driver_app/view/screen/finance_screen/finance_main_screen.dart';
 import 'package:dressfair_driver_app/view/screen/ofd_screen/detail_ofd_screen.dart';
 import 'package:dressfair_driver_app/view/screen/ofd_screen/ofd_screen.dart';
 import 'package:dressfair_driver_app/view/screen/ofd_screen/remark_screen.dart';
@@ -14,6 +15,8 @@ import 'package:dressfair_driver_app/view/screen/pick_up_screen/all_product_pick
 import 'package:dressfair_driver_app/view/screen/pick_up_screen/main_pickup_screen.dart';
 import 'package:dressfair_driver_app/view/screen/returned/detail_returned_screen.dart';
 import 'package:dressfair_driver_app/view/screen/returned/returned_screen_main.dart';
+import 'package:dressfair_driver_app/view/screen/rts_screens/rts_main_screen.dart';
+import 'package:dressfair_driver_app/view/screen/setting_screen/setting_screen.dart';
 import 'package:dressfair_driver_app/view/util/widgets/routes/screens_library.dart';
 
 class MyRoutes {
@@ -25,34 +28,63 @@ class MyRoutes {
         return MaterialPageRoute(builder: (context) => const HomeScreen());
       case loginInScreen:
         return MaterialPageRoute(builder: (context) => const LoginScreen());
-        case pendingScreenMain:
-      return MaterialPageRoute(builder: (context) => const PendingScreenMain());
+      case pendingScreenMain:
+        return MaterialPageRoute(
+          builder: (context) => const PendingScreenMain(),
+        );
       case detailPendingScreen:
         final shipment = settings.arguments as PendingShipment;
-      return MaterialPageRoute(builder: (context) => DetailPendingScreen(shipment: shipment));
+        return MaterialPageRoute(
+          builder: (context) => DetailPendingScreen(shipment: shipment),
+        );
       case detailDeliveredScreen:
         final shipment = settings.arguments as DeliveredModel;
-      return MaterialPageRoute(builder: (context) => DetailDeliveredScreen(shipment: shipment));
+        return MaterialPageRoute(
+          builder: (context) => DetailDeliveredScreen(shipment: shipment),
+        );
       case detailOfdScreen:
         final ofd = settings.arguments as ShowOfdsModel;
-      return MaterialPageRoute(builder: (context) => DetailOfdScreen(ofd: ofd));
+        return MaterialPageRoute(
+          builder: (context) => DetailOfdScreen(ofd: ofd),
+        );
       case detailReturnedScreen:
         final returnedShipment = settings.arguments as ReturnedModel;
-        return MaterialPageRoute(builder: (context) =>  DetailReturnedScreen(returnedShipment:returnedShipment));
+        return MaterialPageRoute(
+          builder: (context) =>
+              DetailReturnedScreen(returnedShipment: returnedShipment),
+        );
       case returnedScreenMain:
-        return MaterialPageRoute(builder: (context) => const ReturnedScreenMain());
-        case deliveredScreenMain:
-        return MaterialPageRoute(builder: (context) => const DeliveredScreenMain());
-        case mainPickupScreen:
-        return MaterialPageRoute(builder: (context) => const MainPickupScreen());
-        case allProductPickScreen:
-        return MaterialPageRoute(builder: (context) => const AllProductPickScreen());
-        case ofdScreenMain:
+        return MaterialPageRoute(
+          builder: (context) => const ReturnedScreenMain(),
+        );
+      case deliveredScreenMain:
+        return MaterialPageRoute(
+          builder: (context) => const DeliveredScreenMain(),
+        );
+      case mainPickupScreen:
+        return MaterialPageRoute(
+          builder: (context) => const MainPickupScreen(),
+        );
+      case settingsScreen:
+        return MaterialPageRoute(builder: (context) => const SettingsScreen());
+      case financeMainScreen:
+        return MaterialPageRoute(
+          builder: (context) => const FinanceMainScreen(),
+        );
+      case allProductPickScreen:
+        return MaterialPageRoute(
+          builder: (context) => const AllProductPickScreen(),
+        );
+      case ofdScreenMain:
         return MaterialPageRoute(builder: (context) => const OfdScreenMain());
-        case deliverySignScreen:
-          final args = settings.arguments as Map<String, dynamic>;
-      return MaterialPageRoute(builder: (context) =>  DeliverySignScreen(
-        productID:  args["productID"]));
+      case rtsMainScreen:
+        return MaterialPageRoute(builder: (context) => const RtsMainScreen());
+      case deliverySignScreen:
+        final args = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(
+          builder: (context) =>
+              DeliverySignScreen(productID: args["productID"]),
+        );
       case remarkScreen:
         final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(
@@ -63,7 +95,7 @@ class MyRoutes {
           ),
         );
 
-    // case mainHomeScreen:
+      // case mainHomeScreen:
       //   return MaterialPageRoute(builder: (context) => const MainHomeScreen());
       // case chatScreen:
       //   return MaterialPageRoute(builder: (context) => const ChatScreen());

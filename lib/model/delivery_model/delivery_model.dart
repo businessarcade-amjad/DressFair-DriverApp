@@ -22,6 +22,7 @@ class DeliveredModel {
 
   /// ✅ Local UI field (not in API JSON)
   RxBool isSelected;
+  double? distanceKm;
 
   DeliveredModel({
     required this.id,
@@ -43,6 +44,7 @@ class DeliveredModel {
     required this.cityArea,
     required this.currency,
     RxBool? isSelected,
+    this.distanceKm, // 👈 allow injection
   }) : isSelected = isSelected ?? false.obs;
 
   factory DeliveredModel.fromJson(Map<String, dynamic> json) {
@@ -50,7 +52,8 @@ class DeliveredModel {
       id: json['id'] ?? 0,
       tenantId: json['tenant_id'] ?? 0,
       paymentMethodId: json['payment_method_id'] ?? 0,
-      courierVoucherId: json['courier_voucher_id'], // ✅ handled safely
+      courierVoucherId: json['courier_voucher_id'],
+      // ✅ handled safely
       toCityId: json['to_city_id'] ?? 0,
       spStatusId: json['sp_status_id'] ?? 0,
       toCityAreaId: json['to_city_area_id'] ?? 0,
@@ -112,16 +115,10 @@ class Status {
   Status({required this.id, required this.name});
 
   factory Status.fromJson(Map<String, dynamic> json) {
-    return Status(
-      id: json['id'] ?? 0,
-      name: json['name'] ?? '',
-    );
+    return Status(id: json['id'] ?? 0, name: json['name'] ?? '');
   }
 
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-  };
+  Map<String, dynamic> toJson() => {"id": id, "name": name};
 }
 
 class PaymentMethod {
@@ -139,27 +136,20 @@ class PaymentMethod {
     );
   }
 
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "code": code,
-  };
+  Map<String, dynamic> toJson() => {"id": id, "name": name, "code": code};
 }
 
 class City {
   final int id;
   final String name;
+
   City({required this.id, required this.name});
+
   factory City.fromJson(Map<String, dynamic> json) {
-    return City(
-      id: json['id'] ?? 0,
-      name: json['name'] ?? '',
-    );
+    return City(id: json['id'] ?? 0, name: json['name'] ?? '');
   }
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-  };
+
+  Map<String, dynamic> toJson() => {"id": id, "name": name};
 }
 
 class CityArea {
@@ -169,16 +159,10 @@ class CityArea {
   CityArea({required this.id, required this.name});
 
   factory CityArea.fromJson(Map<String, dynamic> json) {
-    return CityArea(
-      id: json['id'] ?? 0,
-      name: json['name'] ?? '',
-    );
+    return CityArea(id: json['id'] ?? 0, name: json['name'] ?? '');
   }
 
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-  };
+  Map<String, dynamic> toJson() => {"id": id, "name": name};
 }
 
 class Currency {

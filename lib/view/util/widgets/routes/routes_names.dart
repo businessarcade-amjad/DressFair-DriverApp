@@ -13,4 +13,6 @@ const String ofdScreenMain = '/OfdScreenMain';
 const String detailOfdScreen = '/DetailOfdScreen';
 const String remarkScreen = '/RemarkScreen';
 const String deliverySignScreen = '/DeliverySignScreen';
-
+const String settingsScreen = '/SettingsScreen';
+const String financeMainScreen = '/FinanceMainScreen';
+const String rtsMainScreen = '/RtsMainScreen';

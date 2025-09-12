@@ -1,5 +1,7 @@
 import 'dart:developer';
+
 import 'package:dressfair_driver_app/controller/login_controller.dart';
+import 'package:dressfair_driver_app/controller/simple_method/location_service.dart';
 import 'package:dressfair_driver_app/model/pending_task/pending_task.dart';
 import 'package:dressfair_driver_app/repository/service/network/repository/pending_shipment/pending_shipment_repository.dart';
 import 'package:dressfair_driver_app/view/util/widgets/routes/screens_library.dart';
@@ -21,18 +23,19 @@ class PendingTaskController extends GetxController {
   };
 
   /// For custom range
-  RxString? fullDateFrom="".obs;
-  RxString? fullDateTo="".obs;
+  RxString? fullDateFrom = "".obs;
+  RxString? fullDateTo = "".obs;
   Rx<TextEditingController> monthFrom = TextEditingController(text: "09").obs;
   Rx<TextEditingController> dayFrom = TextEditingController(text: "01").obs;
   Rx<TextEditingController> yearFrom = TextEditingController(text: "2025").obs;
   Rx<TextEditingController> monthTo = TextEditingController(text: "01").obs;
   Rx<TextEditingController> dayTo = TextEditingController(text: "01").obs;
-  Rx<TextEditingController> yearTo = TextEditingController(text:"2026").obs;
+  Rx<TextEditingController> yearTo = TextEditingController(text: "2026").obs;
+  final LocationService locationService = Get.find<LocationService>();
 
   String get selectedFilterValue =>
       filterMap[selectedFilterLabel.value] ?? "all";
-RxBool showSelectALl=false.obs;
+  RxBool showSelectALl = false.obs;
   RxList<PendingShipment> pendingShipment = <PendingShipment>[].obs;
   final PendingShipmentRepository apiRepository = PendingShipmentRepository();
 
@@ -43,6 +46,41 @@ RxBool showSelectALl=false.obs;
   /// Start page at 1 (important! backend doesn't accept 0)
   int page = 1;
 
+  @override
+  void onInit() {
+    super.onInit();
+
+    // Recalculate distances whenever location updates
+    ever(locationService.latitude, (_) => updateDistances());
+    ever(locationService.longitude, (_) => updateDistances());
+  }
+
+  /// Update distance for each delivery point
+  void updateDistances() {
+    final driverLat = locationService.latitude.value;
+    final driverLng = locationService.longitude.value;
+
+    if (driverLat == 0.0 && driverLng == 0.0) return;
+
+    for (var pending in pendingShipment) {
+      if (pending.deliveryLat.isNotEmpty && pending.deliveryLng.isNotEmpty) {
+        double dist = locationService.calculateDistance(
+          driverLat,
+          driverLng,
+          double.tryParse(pending.deliveryLat) ?? 0.0,
+          double.tryParse(pending.deliveryLng) ?? 0.0,
+        );
+        pending.distanceKm = dist;
+      } else {
+        pending.distanceKm = double.infinity;
+      }
+    }
+
+    // Sort by nearest
+    pendingShipment.sort((a, b) => a.distanceKm!.compareTo(b.distanceKm!));
+    pendingShipment.refresh();
+  }
+
   /// Build API endpoint depending on filter and page.
   String buildEndpoint() {
     final filter = selectedFilterValue;
@@ -52,7 +90,8 @@ RxBool showSelectALl=false.obs;
           : AppUrl.pendingShipment;
     }
     if (filter == "custom") {
-      String endpoint="${AppUrl.pendingShipment}?by_duration=custom&date_from=$fullDateFrom&date_to=$fullDateTo";
+      String endpoint =
+          "${AppUrl.pendingShipment}?by_duration=custom&date_from=$fullDateFrom&date_to=$fullDateTo";
       if (page > 1) endpoint += "&page=$page";
       return endpoint;
     }
@@ -63,44 +102,45 @@ RxBool showSelectALl=false.obs;
 
   /// Fetch first page (or refresh) — clears list and resets page to 1
   Future<void> pendingTask() async {
-    if(await InternetController.checkUserConnection()){
-    try {
-      LoginController loginController = Get.put(LoginController());
-      isLoading.value = true;
-      // reset
-      page = 1;
-      hasMore.value = true;
-      pendingShipment.clear();
-      final endpoint = buildEndpoint();
-      log("Fetching: $endpoint");
+    if (await InternetController.checkUserConnection()) {
+      try {
+        LoginController loginController = Get.put(LoginController());
+        isLoading.value = true;
+        // reset
+        page = 1;
+        hasMore.value = true;
+        pendingShipment.clear();
+        final endpoint = buildEndpoint();
+        log("Fetching: $endpoint");
 
-      var response = await apiRepository.getPendingShipment(
-        token: loginController.token.value,
-        pageNo: page,
-        url: endpoint,
-      );
-      if (response != null && response["success"] == true) {
-        final shipments = PendingShipment.listFromJson(response["data"]);
-       // log("Pending task ${}");
-        pendingShipment.assignAll(shipments);
-        if (shipments.isEmpty) {
-          hasMore.value = false;
-          AppToast.showError("No shipments found");
-          log("No shipments found on first page");
+        var response = await apiRepository.getPendingShipment(
+          token: loginController.token.value,
+          pageNo: page,
+          url: endpoint,
+        );
+        if (response != null && response["success"] == true) {
+          final shipments = PendingShipment.listFromJson(response["data"]);
+          // log("Pending task ${}");
+          pendingShipment.assignAll(shipments);
+          if (shipments.isEmpty) {
+            hasMore.value = false;
+            AppToast.showError("No shipments found");
+            log("No shipments found on first page");
+          } else {
+            page++;
+            log("Fetched ${shipments.length} shipments (page 1)");
+            updateDistances();
+          }
         } else {
-          page++;
-          log("Fetched ${shipments.length} shipments (page 1)");
+          AppToast.showError(response["message"]);
         }
-      } else {
-        AppToast.showError(response["message"]);
+      } catch (e) {
+        AppToast.showError(ErrorHandler.getErrorMessage(e));
+        log("Error: ${e.toString()}");
+      } finally {
+        isLoading.value = false;
       }
-    } catch (e) {
-      AppToast.showError(ErrorHandler.getErrorMessage(e));
-      log("Error: ${e.toString()}");
-    } finally {
-      isLoading.value = false;
-    }
-    }else{
+    } else {
       AppToast.showError("Internet Disconnected");
     }
   }
@@ -129,11 +169,11 @@ RxBool showSelectALl=false.obs;
 
       if (response != null && response["success"] == true) {
         final shipments = PendingShipment.listFromJson(response["data"]);
-
         if (shipments.isNotEmpty) {
           pendingShipment.addAll(shipments);
           page++;
           log("Loaded more: ${shipments.length} (next page: $page)");
+          updateDistances();
         } else {
           hasMore.value = false;
           AppToast.showError("No more data available");

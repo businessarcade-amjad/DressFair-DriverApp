@@ -19,6 +19,8 @@ class ShowOfdsModel {
   final CityArea? cityArea;
   final Currency? currency;
 
+  double? distanceKm; // 👈 Added for live distance
+
   ShowOfdsModel({
     required this.id,
     required this.tenantId,
@@ -39,6 +41,7 @@ class ShowOfdsModel {
     this.city,
     this.cityArea,
     this.currency,
+    this.distanceKm,
   });
 
   factory ShowOfdsModel.fromJson(Map<String, dynamic> json) {
@@ -55,15 +58,19 @@ class ShowOfdsModel {
       toAlternateMobile: json['to_alternate_mobile'],
       contents: json['contents'] ?? "",
       amount: json['amount'] ?? "",
-      deliveryLat: json['map_latitude']?.toString() ?? "",   // 👈 fixed
-      deliveryLng: json['map_longitude']?.toString() ?? "", // 👈 fixed
+      deliveryLat: json['map_latitude']?.toString() ?? "",
+      deliveryLng: json['map_longitude']?.toString() ?? "",
       status: json['status'] != null ? Status.fromJson(json['status']) : null,
       paymentMethod: json['payment_method'] != null
           ? PaymentMethod.fromJson(json['payment_method'])
           : null,
       city: json['city'] != null ? City.fromJson(json['city']) : null,
-      cityArea: json['city_area'] != null ? CityArea.fromJson(json['city_area']) : null,
-      currency: json['currency'] != null ? Currency.fromJson(json['currency']) : null,
+      cityArea: json['city_area'] != null
+          ? CityArea.fromJson(json['city_area'])
+          : null,
+      currency: json['currency'] != null
+          ? Currency.fromJson(json['currency'])
+          : null,
     );
   }
 }
@@ -75,10 +82,7 @@ class Status {
   Status({required this.id, required this.name});
 
   factory Status.fromJson(Map<String, dynamic> json) {
-    return Status(
-      id: json['id'] ?? 0,
-      name: json['name'] ?? "",
-    );
+    return Status(id: json['id'] ?? 0, name: json['name'] ?? "");
   }
 }
 
@@ -105,10 +109,7 @@ class City {
   City({required this.id, required this.name});
 
   factory City.fromJson(Map<String, dynamic> json) {
-    return City(
-      id: json['id'] ?? 0,
-      name: json['name'] ?? "",
-    );
+    return City(id: json['id'] ?? 0, name: json['name'] ?? "");
   }
 }
 
@@ -119,10 +120,7 @@ class CityArea {
   CityArea({required this.id, required this.name});
 
   factory CityArea.fromJson(Map<String, dynamic> json) {
-    return CityArea(
-      id: json['id'] ?? 0,
-      name: json['name'] ?? "",
-    );
+    return CityArea(id: json['id'] ?? 0, name: json['name'] ?? "");
   }
 }
 

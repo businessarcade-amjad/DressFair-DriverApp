@@ -1,26 +1,23 @@
 class Profile {
-  int? shipping_provider_id;
+  int? shippingProviderId;
   String? name;
-  String? mobile_number;
+  String? mobileNumber;
 
+  Profile({this.shippingProviderId, this.name, this.mobileNumber});
 
-  Profile(
-      {this.shipping_provider_id,
-      this.name,
-      this.mobile_number,
-
-      });
-  Profile.fromJson(Map<String, dynamic> json) {
-    shipping_provider_id = json['shipping_provider_id'];
-    name = json['name'];
-    mobile_number = json['mobile_number'];
-
+  factory Profile.fromJson(Map<String, dynamic> json) {
+    return Profile(
+      shippingProviderId: json['shipping_provider_id'] as int?,
+      name: json['name'] as String?,
+      mobileNumber: json['mobile_number']?.toString(),
+    );
   }
+
   Map<String, dynamic> toJson() {
     return {
-      "shipping_provider_id": shipping_provider_id,
-      "name": name,
-      "mobile_number": mobile_number,
+      'shipping_provider_id': shippingProviderId,
+      'name': name,
+      'mobile_number': mobileNumber,
     };
   }
 }

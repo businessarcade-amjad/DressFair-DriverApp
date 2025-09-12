@@ -1,27 +1,30 @@
 import 'dart:developer';
+
 import 'package:dressfair_driver_app/controller/login_controller.dart';
 import 'package:dressfair_driver_app/controller/scan_barcode_controller/scan_barcode_controller.dart';
-import 'package:dressfair_driver_app/repository/service/network/api_response.dart';
 import 'package:dressfair_driver_app/repository/service/network/repository/scan_barcode_repository/confirmed_bar_code_repository.dart';
 import 'package:dressfair_driver_app/view/util/widgets/routes/screens_library.dart';
 
-class ConfirmBarCodeController extends GetxController{
-
+class ConfirmBarCodeController extends GetxController {
   final ConfirmBarCodeRepository apiRepository = ConfirmBarCodeRepository();
   RxBool isLoading = false.obs;
-  Future<void> confirmBarCode({required List<String> barCodeIds})async {
+
+  Future<void> confirmBarCode({required List<String> barCodeIds}) async {
     ScanBarcodeController allProductPickController = Get.put(
-        ScanBarcodeController());
+      ScanBarcodeController(),
+    );
     if (await InternetController.checkUserConnection()) {
       try {
         LoginController loginController = Get.put(LoginController());
-
         isLoading.value = true;
         var response = await apiRepository.confirmBarCode(
-            barCodeIds: barCodeIds, token: loginController.token.value);
+          barCodeIds: barCodeIds,
+          token: loginController.token.value,
+        );
         if (response != null && response["success"] == true) {
           allProductPickController.allProductPick.clear();
-          AppToast.showError(response["message"]);
+          AppToast.showSuccess(response["message"]);
+          Get.offAllNamed(homeScreen);
         } else {
           allProductPickController.allProductPick.clear();
           AppToast.showError(response["message"]);
@@ -33,8 +36,7 @@ class ConfirmBarCodeController extends GetxController{
         log("Error: ${e.toString()}");
         AppToast.showError(ErrorHandler.getErrorMessage(e));
       }
-    }
-    else {
+    } else {
       AppToast.showError("Internet Disconnected");
     }
   }

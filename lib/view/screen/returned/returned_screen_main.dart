@@ -241,24 +241,26 @@ class _ReturnedScreenMainState extends State<ReturnedScreenMain> {
 
 */
 
-
-
 class ReturnedScreenMain extends StatefulWidget {
   const ReturnedScreenMain({super.key});
+
   @override
   State<ReturnedScreenMain> createState() => _ReturnedScreenMainState();
 }
+
 class _ReturnedScreenMainState extends State<ReturnedScreenMain> {
-  final ReturnedShipmentController returnedShipmentController =
-  Get.put(ReturnedShipmentController());
+  final ReturnedShipmentController returnedShipmentController = Get.put(
+    ReturnedShipmentController(),
+  );
   final ScrollController _scrollController = ScrollController();
-  OfdController ofdController=Get.put(OfdController());
+  OfdController ofdController = Get.put(OfdController());
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       returnedShipmentController.returnedShipment.clear();
-      returnedShipmentController.selectedFilterLabel.value="All Record";
+      returnedShipmentController.selectedFilterLabel.value = "All Record";
       returnedShipmentController.returnedTask();
     });
 
@@ -296,7 +298,11 @@ class _ReturnedScreenMainState extends State<ReturnedScreenMain> {
           var item = returnedShipmentController.returnedShipment[index];
           return Padding(
             padding: EdgeInsets.only(
-                left: 8.0.w, right: 8.0.w, bottom: 10.h, top: 2.h),
+              left: 8.0.w,
+              right: 8.0.w,
+              bottom: 10.h,
+              top: 2.h,
+            ),
             child: Container(
               decoration: BoxDecoration(
                 color: AppColors.whiteColor,
@@ -344,16 +350,22 @@ class _ReturnedScreenMainState extends State<ReturnedScreenMain> {
                           child: Row(
                             children: [
                               10.w.sw,
-                              Text("Order No : ",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15.sp)),
-                              Text(item.spAwbNumber ?? "",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15.sp)),
+                              Text(
+                                "Order No : ",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15.sp,
+                                ),
+                              ),
+                              Text(
+                                item.spAwbNumber ?? "",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15.sp,
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -363,16 +375,22 @@ class _ReturnedScreenMainState extends State<ReturnedScreenMain> {
                           child: Row(
                             children: [
                               10.w.sw,
-                              Text("Mobile No:",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 14.sp)),
-                              Text(item.toMobile,
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 14.sp)),
+                              Text(
+                                "Mobile No:",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14.sp,
+                                ),
+                              ),
+                              Text(
+                                item.toMobile,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14.sp,
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -383,21 +401,25 @@ class _ReturnedScreenMainState extends State<ReturnedScreenMain> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               10.w.sw,
-                              Text("Address : ",
-                                  maxLines: 1,
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 14.sp)),
+                              Text(
+                                "Address : ",
+                                maxLines: 1,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14.sp,
+                                ),
+                              ),
                               Container(
                                 width: MediaQuery.sizeOf(context).width * 0.49,
                                 child: Text(
                                   "${item.cityArea?.name ?? ""} ${item.toAddress}",
                                   maxLines: 2,
                                   style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 14.sp),
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14.sp,
+                                  ),
                                 ),
                               ),
                             ],
@@ -421,14 +443,22 @@ class _ReturnedScreenMainState extends State<ReturnedScreenMain> {
                               color: Colors.black.withOpacity(0.7)),
                         ),
                         */
-
                         10.w.sw,
                         GestureDetector(
                           onTap: () {
                             showDialog(
                               context: context,
                               builder: (context) {
-                                return MoreButtons(no: () {}, yes: () {});
+                                return MoreButtons(
+                                  no: () {},
+                                  yes: () {},
+                                  deliveryLat:
+                                      double.tryParse(item.deliveryLat ?? '') ??
+                                      0.0,
+                                  deliveryLng:
+                                      double.tryParse(item.deliveryLng ?? '') ??
+                                      0.0,
+                                );
                               },
                             );
                           },
@@ -453,11 +483,13 @@ class _ReturnedScreenMainState extends State<ReturnedScreenMain> {
           // Bottom loader
           return returnedShipmentController.isMoreLoading.value
               ? Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Center(
-                child: CircularProgressIndicator(
-                    color: AppColors.primaryColor)),
-          )
+                  padding: const EdgeInsets.all(16.0),
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
+                )
               : SizedBox.shrink();
         }
       },
@@ -467,7 +499,7 @@ class _ReturnedScreenMainState extends State<ReturnedScreenMain> {
   @override
   Widget build(BuildContext context) {
     return Obx(
-          () => OrangeStatusBar(
+      () => OrangeStatusBar(
         child: Scaffold(
           /* floatingActionButton: FloatingActionButton(
               backgroundColor: AppColors.primaryColor,
@@ -498,39 +530,57 @@ class _ReturnedScreenMainState extends State<ReturnedScreenMain> {
                         child: Row(
                           children: [
                             20.w.sw,
-                            Icon(Icons.search,
-                                size: 22.sp,
-                                color: Colors.black.withOpacity(0.7)),
+                            Icon(
+                              Icons.search,
+                              size: 22.sp,
+                              color: Colors.black.withOpacity(0.7),
+                            ),
                             Spacer(),
                             Obx(
-                                  () => Padding(
+                              () => Padding(
                                 padding: EdgeInsets.only(right: 10.0.w),
                                 child: DropdownButtonHideUnderline(
                                   child: DropdownButton<String>(
-                                    value: returnedShipmentController.selectedFilterLabel.value,
-                                    icon: Icon(Icons.arrow_drop_down, color: Colors.black),
+                                    value: returnedShipmentController
+                                        .selectedFilterLabel
+                                        .value,
+                                    icon: Icon(
+                                      Icons.arrow_drop_down,
+                                      color: Colors.black,
+                                    ),
                                     dropdownColor: Colors.white,
                                     isDense: true,
                                     style: TextStyle(
                                       color: Colors.black.withOpacity(0.7),
                                       fontSize: 16.sp,
                                     ),
-                                    items: returnedShipmentController.filterMap.keys.map((label) {
-                                      return DropdownMenuItem<String>(
-                                        value: label,
-                                        child: Text(label),
-                                      );
-                                    }).toList(),
+                                    items: returnedShipmentController
+                                        .filterMap
+                                        .keys
+                                        .map((label) {
+                                          return DropdownMenuItem<String>(
+                                            value: label,
+                                            child: Text(label),
+                                          );
+                                        })
+                                        .toList(),
                                     onChanged: (newLabel) async {
-                                      returnedShipmentController.selectedFilterLabel.value = newLabel!;
-                                      if (returnedShipmentController.selectedFilterValue == "custom") {
+                                      returnedShipmentController
+                                              .selectedFilterLabel
+                                              .value =
+                                          newLabel!;
+                                      if (returnedShipmentController
+                                              .selectedFilterValue ==
+                                          "custom") {
                                         showDialog(
                                           context: context,
                                           builder: (context) {
                                             return DateRangeDialog(
-                                              onCancel: () => Navigator.pop(context),
-                                              onOk: (){
-                                                returnedShipmentController.returnedTask();
+                                              onCancel: () =>
+                                                  Navigator.pop(context),
+                                              onOk: () {
+                                                returnedShipmentController
+                                                    .returnedTask();
                                                 Navigator.pop(context);
                                               },
                                             );
@@ -538,14 +588,17 @@ class _ReturnedScreenMainState extends State<ReturnedScreenMain> {
                                         );
                                       } else {
                                         // Example: call API with backend value
-                                        print("Send to API: ${returnedShipmentController.selectedFilterValue}");
-                                        await returnedShipmentController.returnedTask();                                      }
+                                        print(
+                                          "Send to API: ${returnedShipmentController.selectedFilterValue}",
+                                        );
+                                        await returnedShipmentController
+                                            .returnedTask();
+                                      }
                                     },
                                   ),
                                 ),
                               ),
                             ),
-
                           ],
                         ),
                       ),
@@ -553,7 +606,8 @@ class _ReturnedScreenMainState extends State<ReturnedScreenMain> {
                   ],
                 ),
               ),
-/*
+
+              /*
               Visibility(
                 visible: returnedShipmentController.returnedShipment
                     .any((item) => item.isSelected.value),
@@ -590,7 +644,6 @@ class _ReturnedScreenMainState extends State<ReturnedScreenMain> {
                 ),
               ),
               */
-
               6.h.sh,
               Expanded(child: pendingCard()),
               5.h.sh,
@@ -633,11 +686,9 @@ class _ReturnedScreenMainState extends State<ReturnedScreenMain> {
 
                */
             ],
-
           ),
         ),
       ),
     );
   }
 }
-
